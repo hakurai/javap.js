@@ -1,0 +1,445 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset=UTF-8>
+    <link rel="stylesheet" href="index.css" type="text/css"/>
+    <script type="text/javascript" src="../src/main/classLoader.js"></script>
+    <script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="lib/knockout-2.2.0.js"></script>
+    <title></title>
+</head>
+<body>
+
+<div id="drop">
+    <p>DROP CLASS FILE</p>
+    <p>HERE!</p>
+</div>
+
+<div>
+
+    <table id="other-items">
+        <tbody>
+        <tr>
+            <th>minorVersion</th>
+            <td data-bind="text: minorVersion"></td>
+        </tr>
+        <tr>
+            <th>majorVersion</th>
+            <td data-bind="text: majorVersion"></td>
+        </tr>
+        <tr>
+            <th>constantPoolCount</th>
+            <td data-bind="text: constantPoolCount"></td>
+        </tr>
+        <tr>
+            <th>accessFlags</th>
+            <td data-bind="text: accessFlags"></td>
+        </tr>
+        <tr>
+            <th>thisClass</th>
+            <td data-bind="text: thisClass"></td>
+        </tr>
+        <tr>
+            <th>superClass</th>
+            <td data-bind="text: superClass"></td>
+        </tr>
+        <tr>
+            <th>interfacesCount</th>
+            <td data-bind="text: interfacesCount"></td>
+        </tr>
+        <tr>
+            <th>fieldsCount</th>
+            <td data-bind="text: fieldsCount"></td>
+        </tr>
+        <tr>
+            <th>methodsCount</th>
+            <td data-bind="text: methodsCount"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table id="constant-pool" border="1" cellspacing="0" cellpadding="3">
+        <thead>
+        <tr>
+            <th>index</th>
+            <th>Constant Type</th>
+            <th>tag</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: constantPool">
+        <tr data-bind="template: {name: 'constant-' + $data.tag}">
+        </tr>
+        </tbody>
+    </table>
+
+    <table id="interfaces" border="1" cellspacing="0" cellpadding="3">
+        <thead>
+        <tr>
+            <th>index</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: interfaces">
+        <tr>
+            <td data-bind="text: $index"></td>
+            <td data-bind="text: $data"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table id="fields" border="1" cellspacing="0" cellpadding="3">
+        <thead>
+        <tr>
+            <th>index</th>
+            <th>accessFlags</th>
+            <th>nameTypeIndex</th>
+            <th>descTypeIndex</th>
+            <th>attributeCount</th>
+            <th>attributes</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: fields">
+        <tr>
+            <th data-bind="text: $index"></th>
+            <td data-bind="text: accessFlags"></td>
+            <td data-bind="text: nameTypeIndex"></td>
+            <td data-bind="text: descTypeIndex"></td>
+            <td data-bind="text: attributeCount"></td>
+            <td data-bind="if: attributes.length > 0">
+                <table border="1" cellspacing="0" cellpadding="3">
+                    <thead>
+                    <tr>
+                        <th>index</th>
+                        <th>attributeNameIndex</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody data-bind="foreach: attributes">
+                    <tr data-bind="template: {name: $root.klass().constantPool[$data.attributeNameIndex].bytes}">
+                    </tr>
+                    </tbody>
+                </table>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+<script type="text/javascript" src="index.js"></script>
+<script type="text/html" id="constant-undefined">
+    <th data-bind="text: $index"></th>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+</script>
+<script type="text/html" id="constant-1">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: length"></td>
+    <td data-bind="text: bytes"></td>
+</script>
+<script type="text/html" id="constant-2">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: bytes"></td>
+    <td></td>
+</script>
+<script type="text/html" id="constant-3">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: bytes"></td>
+    <td></td>
+</script>
+<script type="text/html" id="constant-4">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: bytes"></td>
+    <td></td>
+</script>
+<script type="text/html" id="constant-5">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: highBytes"></td>
+    <td data-bind="text: lowBytes"></td>
+</script>
+<script type="text/html" id="constant-6">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: highBytes"></td>
+    <td data-bind="text: lowBytes"></td>
+</script>
+<script type="text/html" id="constant-7">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: nameIndex"></td>
+    <td></td>
+</script>
+<script type="text/html" id="constant-8">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: stringIndex"></td>
+    <td></td>
+</script>
+<script type="text/html" id="constant-9">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: classIndex"></td>
+    <td data-bind="text: nameTypeIndex"></td>
+</script>
+<script type="text/html" id="constant-10">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: classIndex"></td>
+    <td data-bind="text: nameTypeIndex"></td>
+</script>
+<script type="text/html" id="constant-11">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: classIndex"></td>
+    <td data-bind="text: nameTypeIndex"></td>
+</script>
+<script type="text/html" id="constant-12">
+    <th data-bind="text: $index"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: nameIndex"></td>
+    <td data-bind="text: descriptorIndex"></td>
+</script>
+
+<script type="text/html" id="ConstantValue">
+    <th data-bind="text: $index"></th>
+    <td data-bind="text: attributeNameIndex"></td>
+    <td data-bind="text: attributeLength"></td>
+    <td data-bind="text: constantValueIndex"></td>
+</script>
+<script type="text/html" id="Synthetic">
+    <th data-bind="text: $index"></th>
+    <td data-bind="text: attributeNameIndex"></td>
+    <td data-bind="text: attributeLength"></td>
+    <td></td>
+</script>
+<script type="text/html" id="Signature">
+    <th data-bind="text: $index"></th>
+    <td data-bind="text: attributeNameIndex"></td>
+    <td data-bind="text: attributeLength"></td>
+    <td data-bind="text: signatureIndex"></td>
+</script>
+<script type="text/html" id="Deprecated">
+    <th data-bind="text: $index"></th>
+    <td data-bind="text: attributeNameIndex"></td>
+    <td data-bind="text: attributeLength"></td>
+    <td></td>
+</script>
+<script type="text/html" id="RuntimeVisibleAnnotations">
+    <th data-bind="text: $index"></th>
+    <td data-bind="text: attributeNameIndex"></td>
+    <td data-bind="text: numAnnotations"></td>
+    <td>
+        <table border="1" cellspacing="0" cellpadding="3">
+            <thead>
+            <tr>
+                <th>index</th>
+                <th>typeIndex</th>
+                <th>numElementValuePairs</th>
+                <th>elementValuePairs</th>
+            </tr>
+            </thead>
+            <tbody data-bind="foreach: annotations">
+            <tr>
+                <th data-bind="text: $index"></th>
+                <td data-bind="text: typeIndex"></td>
+                <td data-bind="text: numElementValuePairs"></td>
+                <td data-bind="if: numElementValuePairs > 0">
+                    <table border="1" cellspacing="0" cellpadding="3">
+                        <thead>
+                        <tr>
+                            <th>index</th>
+                            <th>elementNameIndex</th>
+                            <th>value</th>
+                        </tr>
+                        </thead>
+                        <tbody data-bind="foreach: elementValuePairs">
+                        <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</script>
+<script type="text/html" id="RuntimeInvisibleAnnotations">
+    <th data-bind="text: $index"></th>
+    <td data-bind="text: attributeNameIndex"></td>
+    <td data-bind="text: numAnnotations"></td>
+    <td>
+        <table border="1" cellspacing="0" cellpadding="3">
+            <thead>
+            <tr>
+                <th>index</th>
+                <th>typeIndex</th>
+                <th>numElementValuePairs</th>
+                <th>elementValuePairs</th>
+            </tr>
+            </thead>
+            <tbody data-bind="foreach: annotations">
+            <tr>
+            <th data-bind="text: $index"></th>
+            <td data-bind="text: typeIndex"></td>
+            <td data-bind="text: numElementValuePairs"></td>
+            <td data-bind="if: numElementValuePairs > 0">
+                <table border="1" cellspacing="0" cellpadding="3">
+                    <thead>
+                    <tr>
+                        <th>index</th>
+                        <th>elementNameIndex</th>
+                        <th>value</th>
+                    </tr>
+                    </thead>
+                    <tbody data-bind="foreach: elementValuePairs">
+                    <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                    </tbody>
+            </tbody>
+        </table>
+    </td>
+    </tr>
+    </tbody>
+    </table>
+    </td>
+</script>
+
+<script type="text/html" id="elementValue-other">
+    <th data-bind="text: $index"></th>
+    <td data-bind="text: elementNameIndex"></td>
+    <td>
+        <table border="1" cellspacing="0" cellpadding="3">
+            <thead>
+            <tr>
+                <th>tag</th>
+                <th>constValueIndex</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td data-bind="text: tag"></td>
+                <td data-bind="text: constValueIndex"></td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</script>
+<script type="text/html" id="elementValue-enum">
+    <th data-bind="text: $index"></th>
+    <td data-bind="text: elementNameIndex"></td>
+    <td>
+        <table border="1" cellspacing="0" cellpadding="3">
+            <thead>
+            <tr>
+                <th>tag</th>
+                <th>typeNameIndex</th>
+                <th>constNameIndex</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td data-bind="text: tag"></td>
+                <td data-bind="text: enumConstValue.typeNameIndex"></td>
+                <td data-bind="text: enumConstValue.constNameIndex"></td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</script>
+<script type="text/html" id="elementValue-class">
+    <th data-bind="text: $index"></th>
+    <td data-bind="text: elementNameIndex"></td>
+    <td>
+        <table border="1" cellspacing="0" cellpadding="3">
+            <thead>
+            <tr>
+                <th>tag</th>
+                <th>constValueIndex</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td data-bind="text: tag"></td>
+                <td data-bind="text: classInfoIndex"></td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</script>
+<script type="text/html" id="elementValue-annotation">
+    <th data-bind="text: $index"></th>
+    <td data-bind="text: elementNameIndex"></td>
+    <td>
+        <table border="1" cellspacing="0" cellpadding="3">
+            <thead>
+            <tr>
+                <th>tag</th>
+                <th>elementNameIndex</th>
+                <th>value</th>
+            </tr>
+            </thead>
+            <tbody data-bind="template: {name:'RuntimeVisibleAnnotations', data: annotationValue}">
+            </tbody>
+        </table>
+    </td>
+    <td></td>
+</script>
+<script type="text/html" id="elementValue-array">
+    <th data-bind="text: $index"></th>
+    <td data-bind="text: elementNameIndex"></td>
+    <td>
+        <table border="1" cellspacing="0" cellpadding="3">
+            <thead>
+            <tr>
+                <th>tag</th>
+                <th>numValues</th>
+                <th>values</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td data-bind="text: tag"></td>
+                <td data-bind="text: arrayValue.numValues"></td>
+                <td>
+                    <table border="1" cellspacing="0" cellpadding="3">
+                        <thead>
+                        <tr>
+                            <th>index</th>
+                            <th>tag</th>
+                            <th>value</th>
+                        </tr>
+                        </thead>
+                        <tbody data-bind="template: {name:'RuntimeVisibleAnnotations', data: annotationValue}">
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </td>
+</script>
+</html>
