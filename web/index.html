@@ -13,6 +13,7 @@
 
 <div id="drop">
     <p>DROP CLASS FILE</p>
+
     <p>HERE!</p>
 </div>
 
@@ -113,13 +114,14 @@
                     <thead>
                     <tr>
                         <th>index</th>
+                        <th>Attribute</th>
                         <th>attributeNameIndex</th>
                         <th></th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody data-bind="foreach: attributes">
-                    <tr data-bind="template: {name: $root.klass().constantPool[$data.attributeNameIndex].bytes}">
+                    <tr data-bind="template: {name: $root.getConstantUTF8Value($data.attributeNameIndex)}">
                     </tr>
                     </tbody>
                 </table>
@@ -133,126 +135,136 @@
 
 
 </body>
+
 <script type="text/javascript" src="index.js"></script>
+
+<!-- constant pool -->
 <script type="text/html" id="constant-undefined">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td></td>
     <td></td>
     <td></td>
     <td></td>
 </script>
 <script type="text/html" id="constant-1">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
     <td data-bind="text: length"></td>
     <td data-bind="text: bytes"></td>
 </script>
 <script type="text/html" id="constant-2">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
     <td data-bind="text: bytes"></td>
     <td></td>
 </script>
 <script type="text/html" id="constant-3">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
     <td data-bind="text: bytes"></td>
     <td></td>
 </script>
 <script type="text/html" id="constant-4">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
     <td data-bind="text: bytes"></td>
     <td></td>
 </script>
 <script type="text/html" id="constant-5">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
     <td data-bind="text: highBytes"></td>
     <td data-bind="text: lowBytes"></td>
 </script>
 <script type="text/html" id="constant-6">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
     <td data-bind="text: highBytes"></td>
     <td data-bind="text: lowBytes"></td>
 </script>
 <script type="text/html" id="constant-7">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td data-bind="text: nameIndex"></td>
+    <td><a data-bind="text: nameIndex, attr: {href: '#constant' + nameIndex}"></a></td>
     <td></td>
 </script>
 <script type="text/html" id="constant-8">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td data-bind="text: stringIndex"></td>
+    <td><a data-bind="text: stringIndex, attr: {href: '#constant' + stringIndex}"></a></td>
     <td></td>
 </script>
 <script type="text/html" id="constant-9">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td data-bind="text: classIndex"></td>
-    <td data-bind="text: nameTypeIndex"></td>
+    <td><a data-bind="text: classIndex, attr: {href: '#constant' + classIndex}"></a></td>
+    <td><a data-bind="text: nameTypeIndex, attr: {href: '#constant' + nameTypeIndex}"></a></td>
 </script>
 <script type="text/html" id="constant-10">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td data-bind="text: classIndex"></td>
-    <td data-bind="text: nameTypeIndex"></td>
+    <td><a data-bind="text: classIndex, attr: {href: '#constant' + classIndex}"></a></td>
+    <td><a data-bind="text: nameTypeIndex, attr: {href: '#constant' + nameTypeIndex}"></a></td>
 </script>
 <script type="text/html" id="constant-11">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td data-bind="text: classIndex"></td>
-    <td data-bind="text: nameTypeIndex"></td>
+    <td><a data-bind="text: classIndex, attr: {href: '#constant' + classIndex}"></a></td>
+    <td><a data-bind="text: nameTypeIndex, attr: {href: '#constant' + nameTypeIndex}"></a></td>
 </script>
 <script type="text/html" id="constant-12">
-    <th data-bind="text: $index"></th>
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td data-bind="text: nameIndex"></td>
-    <td data-bind="text: descriptorIndex"></td>
+    <td><a data-bind="text: nameIndex, attr: {href: '#constant' + nameIndex}"></a></td>
+    <td><a data-bind="text: descriptorIndex, attr: {href: '#constant' + descriptorIndex}"></a></td>
 </script>
 
+<!-- attributes -->
 <script type="text/html" id="ConstantValue">
     <th data-bind="text: $index"></th>
-    <td data-bind="text: attributeNameIndex"></td>
+    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></td>
+    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
     <td data-bind="text: attributeLength"></td>
-    <td data-bind="text: constantValueIndex"></td>
+    <td><a data-bind="text: constantValueIndex, attr: {href: '#constant' + constantValueIndex}"></a></td>
 </script>
 <script type="text/html" id="Synthetic">
     <th data-bind="text: $index"></th>
-    <td data-bind="text: attributeNameIndex"></td>
+    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></td>
+    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
     <td data-bind="text: attributeLength"></td>
     <td></td>
 </script>
 <script type="text/html" id="Signature">
     <th data-bind="text: $index"></th>
-    <td data-bind="text: attributeNameIndex"></td>
+    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></td>
+    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
     <td data-bind="text: attributeLength"></td>
-    <td data-bind="text: signatureIndex"></td>
+    <td><a
+            data-bind="text: signatureIndex, attr: {href: '#constant' + signatureIndex}"></a></td>
 </script>
 <script type="text/html" id="Deprecated">
     <th data-bind="text: $index"></th>
-    <td data-bind="text: attributeNameIndex"></td>
+    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></td>
+    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
     <td data-bind="text: attributeLength"></td>
     <td></td>
 </script>
 <script type="text/html" id="RuntimeVisibleAnnotations">
     <th data-bind="text: $index"></th>
-    <td data-bind="text: attributeNameIndex"></td>
+    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></td>
+    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
     <td data-bind="text: numAnnotations"></td>
     <td>
         <table border="1" cellspacing="0" cellpadding="3">
@@ -290,7 +302,8 @@
 </script>
 <script type="text/html" id="RuntimeInvisibleAnnotations">
     <th data-bind="text: $index"></th>
-    <td data-bind="text: attributeNameIndex"></td>
+    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value($data.attributeNameIndex)"></td>
+    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
     <td data-bind="text: numAnnotations"></td>
     <td>
         <table border="1" cellspacing="0" cellpadding="3">
@@ -328,6 +341,7 @@
     </td>
 </script>
 
+<!-- element value -->
 <script type="text/html" id="elementValue-other">
     <th data-bind="text: $index"></th>
     <td data-bind="text: elementNameIndex"></td>

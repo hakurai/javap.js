@@ -9,7 +9,7 @@ body {
 
 #drop {
     font-size: 110%;
-    color:  #F0F0F0;
+    color: #F0F0F0;
     text-align: center;
     vertical-align: middle;
     background: #cc9593;
@@ -17,6 +17,10 @@ body {
     width: 200px;
     height: 100px;
     margin: 20px 0;
+}
+
+a {
+    color: #cc9593;
 }
 
 table {
@@ -46,6 +50,7 @@ table th:first-child {
     text-align: left;
 }
 
-td.constant-type {
+td.constant-type,
+.constant-utf8-value {
     color: #6e641d;
 }

@@ -54,6 +54,13 @@ var index = {};
             }
         }
 
+        function getConstantUTF8Value(index) {
+            if(typeof constantPool()[index] !== 'undefined'){
+                return constantPool()[index].bytes;
+            }
+            return '';
+        }
+
         function getConstantType(tag) {
             switch (tag) {
                 case 1:
@@ -92,20 +99,21 @@ var index = {};
         }
 
         return {
+            minorVersion:minorVersion,
+            majorVersion:majorVersion,
+            constantPoolCount:constantPoolCount,
+            accessFlags:accessFlags,
+            thisClass:thisClass,
+            superClass:superClass,
+            interfacesCount:interfacesCount,
+            fieldsCount:fieldsCount,
+            methodsCount:methodsCount,
+            constantPool:constantPool,
+            interfaces:interfaces,
+            fields:fields,
             elementValueTemplate:elementValueTemplate,
-            getConstantType:getConstantType,
-            minorVersion:ko.observable(),
-            majorVersion:ko.observable(),
-            constantPoolCount:ko.observable(),
-            accessFlags:ko.observable(),
-            thisClass:ko.observable(),
-            superClass:ko.observable(),
-            interfacesCount:ko.observable(),
-            fieldsCount:ko.observable(),
-            methodsCount:ko.observable(),
-            constantPool:ko.observableArray(),
-            interfaces:ko.observableArray(),
-            fields:ko.observableArray()
+            getConstantUTF8Value:getConstantUTF8Value,
+            getConstantType:getConstantType
 
         };
     }

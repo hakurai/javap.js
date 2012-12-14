@@ -168,6 +168,15 @@ if (typeof JVM === 'undefined') {
             klass.methodsCount = getU2();
         }
 
+        function readMethods() {
+            var count = klass.methodsCount;
+            var methods = [];
+            for (var i = 0; i < count; i++) {
+                methods.push(getMethodInfo());
+            }
+            klass.methods = methods;
+        }
+
 
         function getCPInfo(info) {
             info.tag = getU1();
@@ -339,12 +348,53 @@ if (typeof JVM === 'undefined') {
                     fn = getConstantValue;
                     break;
 
+                case 'Code':
+                    fn = getCode;
+                    break;
+
+                case 'StackMapTable':
+
+                    break;
+
+                case 'Exceptions':
+
+                    break;
+
+                case 'InnerClasses':
+
+                    break;
+
+                case 'EnclosingMethod':
+
+                    break;
+
                 case 'Synthetic':
                     fn = getSynthetic;
                     break;
 
                 case 'Signature':
                     fn = getSignature;
+                    break;
+
+                case 'SourceFile':
+
+                    break;
+
+                case 'SourceDebugExtension':
+
+                    break;
+
+                case 'LineNumberTable':
+
+                    break;
+
+
+                case 'LocalVariableTable':
+
+                    break;
+
+                case 'LocalVariableTypeTable':
+
                     break;
 
                 case 'Deprecated':
@@ -357,6 +407,22 @@ if (typeof JVM === 'undefined') {
 
                 case 'RuntimeInvisibleAnnotations':
                     fn = getRuntimeInvisibleAnnotations;
+                    break;
+
+                case 'RuntimeVisibleParameterAnnotations':
+
+                    break;
+
+                case 'RuntimeInvisibleParameterAnnotations':
+
+                    break;
+
+                case 'AnnotationDefault':
+
+                    break;
+
+                case 'BootstrapMethods':
+
                     break;
 
                 default :
@@ -372,6 +438,13 @@ if (typeof JVM === 'undefined') {
             attr.attributeLength = getU4();
             attr.constantValueIndex = getU2();
 
+        }
+
+        function getCode(attr) {
+            attr.attributeLength = getU4();
+            attr.maxStack = getU2();
+            attr.maxLocals = getU2();
+            attr.codeLength = getU4();
         }
 
         function getSynthetic(attr) {
@@ -486,6 +559,27 @@ if (typeof JVM === 'undefined') {
 
 
             }
+        }
+
+        function getMethodInfo() {
+            var methodInfo = {};
+
+            methodInfo.accessFlags = getU2();
+            methodInfo.nameIndex = getU2();
+            methodInfo.descriptorIndex = getU2();
+            methodInfo.attributesCount = getU2();
+
+            var count = info.attributesCount;
+            var attributes = [];
+
+            for (var i = 0; i < count; i++) {
+                attributes.push(getAttribute());
+            }
+
+            methodInfo.attributes = attributes;
+
+            return methodInfo;
+
         }
 
     }
