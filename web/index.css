@@ -20,13 +20,19 @@ body {
 }
 
 a {
-    color: #cc9593;
+    color: #b10000;
 }
 
 table {
     border: 0;
     border-collapse: separate;
     border-spacing: 0 2px;
+    margin-bottom: 20px;
+}
+
+table table {
+    margin-top: 5px;
+    margin-left: 10px;
 }
 
 table td {
@@ -46,6 +52,10 @@ table th:first-child {
     border-left-width: 1px;
 }
 
+.border-left {
+    border-left-width: 1px;
+}
+
 #other-items th {
     text-align: left;
 }
@@ -53,4 +63,42 @@ table th:first-child {
 td.constant-type,
 .constant-utf8-value {
     color: #6e641d;
+}
+
+.method th {
+    background: #a4af9f;
+}
+
+.method td {
+    background: #ebf5ec;
+}
+
+.attributes {
+    width: 90%;
+}
+
+.attributes tbody th {
+    width: 10px;
+}
+
+.attributes th {
+    background: #b6a9bc;
+}
+
+.attributes td {
+    background: #d3d3d4;
+}
+
+.method tbody th {
+    width: 10px;
+}
+
+.code th {
+    color: #FFFFFF;
+    background: #757a7b;
+}
+
+.code td {
+    color: #FFFFFF;
+    background: #48494e;
 }

@@ -21,6 +21,7 @@ var index = {};
         var constantPool = ko.observableArray();
         var interfaces = ko.observableArray();
         var fields = ko.observableArray();
+        var methods = ko.observableArray();
 
         function elementValueTemplate(tag) {
             switch (tag) {
@@ -98,6 +99,10 @@ var index = {};
 
         }
 
+        function getConstantHref(index){
+            return '#constant' + index;
+        }
+
         return {
             minorVersion:minorVersion,
             majorVersion:majorVersion,
@@ -111,9 +116,11 @@ var index = {};
             constantPool:constantPool,
             interfaces:interfaces,
             fields:fields,
+            methods:methods,
             elementValueTemplate:elementValueTemplate,
             getConstantUTF8Value:getConstantUTF8Value,
-            getConstantType:getConstantType
+            getConstantType:getConstantType,
+            getConstantHref: getConstantHref
 
         };
     }
@@ -143,6 +150,7 @@ var index = {};
             ko.utils.arrayPushAll(viewModel.constantPool, klass.constantPool);
             ko.utils.arrayPushAll(viewModel.interfaces, klass.interfaces);
             ko.utils.arrayPushAll(viewModel.fields, klass.fields);
+            ko.utils.arrayPushAll(viewModel.methods, klass.methods);
         };
 
         reader.readAsArrayBuffer(file);

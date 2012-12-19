@@ -22,39 +22,45 @@
     <table id="other-items">
         <tbody>
         <tr>
-            <th>minorVersion</th>
+            <th>magic</th>
+            <td>CAFEBABE</td>
+        </tr>
+        <tr>
+            <th>minor_version</th>
             <td data-bind="text: minorVersion"></td>
         </tr>
         <tr>
-            <th>majorVersion</th>
+            <th>major_version</th>
             <td data-bind="text: majorVersion"></td>
         </tr>
         <tr>
-            <th>constantPoolCount</th>
+            <th>constant_pool_count</th>
             <td data-bind="text: constantPoolCount"></td>
         </tr>
         <tr>
-            <th>accessFlags</th>
+            <th>access_flags</th>
             <td data-bind="text: accessFlags"></td>
         </tr>
         <tr>
-            <th>thisClass</th>
-            <td data-bind="text: thisClass"></td>
+            <th>this_class</th>
+            <td data-bind="if: thisClass()"><a
+                    data-bind="text: '#' + thisClass(), attr: {href: '#constant' + thisClass()}"></a></td>
         </tr>
         <tr>
-            <th>superClass</th>
-            <td data-bind="text: superClass"></td>
+            <th>super_class</th>
+            <td data-bind="if: superClass()"><a
+                    data-bind="text: '#' + superClass(), attr: {href: '#constant' + superClass()}"></a></td>
         </tr>
         <tr>
-            <th>interfacesCount</th>
+            <th>interfaces_count</th>
             <td data-bind="text: interfacesCount"></td>
         </tr>
         <tr>
-            <th>fieldsCount</th>
+            <th>fields_count</th>
             <td data-bind="text: fieldsCount"></td>
         </tr>
         <tr>
-            <th>methodsCount</th>
+            <th>methods_count</th>
             <td data-bind="text: methodsCount"></td>
         </tr>
         </tbody>
@@ -63,8 +69,11 @@
     <table id="constant-pool" border="1" cellspacing="0" cellpadding="3">
         <thead>
         <tr>
+            <th colspan="5">constant_pool</th>
+        </tr>
+        <tr>
             <th>index</th>
-            <th>Constant Type</th>
+            <th>ConstantType</th>
             <th>tag</th>
             <th></th>
             <th></th>
@@ -78,6 +87,9 @@
 
     <table id="interfaces" border="1" cellspacing="0" cellpadding="3">
         <thead>
+        <tr>
+            <th colspan="2">interfaces</th>
+        </tr>
         <tr>
             <th>index</th>
             <th></th>
@@ -94,11 +106,14 @@
     <table id="fields" border="1" cellspacing="0" cellpadding="3">
         <thead>
         <tr>
+            <th colspan="6">fields</th>
+        </tr>
+        <tr>
             <th>index</th>
-            <th>accessFlags</th>
-            <th>nameTypeIndex</th>
-            <th>descTypeIndex</th>
-            <th>attributeCount</th>
+            <th>access_flags</th>
+            <th>name_type_index</th>
+            <th>desc_type_index</th>
+            <th>attribute_count</th>
             <th>attributes</th>
         </tr>
         </thead>
@@ -109,27 +124,70 @@
             <td data-bind="text: nameTypeIndex"></td>
             <td data-bind="text: descTypeIndex"></td>
             <td data-bind="text: attributeCount"></td>
-            <td data-bind="if: attributes.length > 0">
-                <table border="1" cellspacing="0" cellpadding="3">
-                    <thead>
-                    <tr>
-                        <th>index</th>
-                        <th>Attribute</th>
-                        <th>attributeNameIndex</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody data-bind="foreach: attributes">
-                    <tr data-bind="template: {name: $root.getConstantUTF8Value($data.attributeNameIndex)}">
-                    </tr>
-                    </tbody>
+            <td data-bind="foreach: attributes">
+                <table data-bind="template: {name: $root.getConstantUTF8Value($data.attributeNameIndex)}" border="1"
+                       class="attributes" cellspacing="0" cellpadding="3">
                 </table>
-
             </td>
         </tr>
         </tbody>
     </table>
+
+    <table id="methods" border="1" cellspacing="0" cellpadding="3">
+        <thead>
+        <tr>
+            <th colspan="2">methods</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: methods">
+        <tr>
+            <th data-bind="text: $index"></th>
+            <td>
+                <table class="method">
+                    <thead>
+                    <tr>
+                        <th colspan="2" data-bind="text: $root.getConstantUTF8Value($data.nameIndex)"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>access_flags</th>
+                        <td data-bind="text: accessFlags"></td>
+                    </tr>
+                    <tr>
+                        <th>name_index</th>
+                        <td data-bind="text: nameIndex"></td>
+                    </tr>
+                    <tr>
+                        <th>descriptor_index</th>
+                        <td data-bind="text: descriptorIndex"></td>
+                    </tr>
+                    <tr>
+                        <th>attributes_count</th>
+                        <td data-bind="text: attributesCount"></td>
+                    </tr>
+                    <tr>
+                        <th colspan="2">attributes</th>
+                    </tr>
+
+                    <!-- ko foreach: attributes -->
+                    <tr>
+                        <th></th>
+                        <td>
+                            <table data-bind="template: {name: $root.getConstantUTF8Value($data.attributeNameIndex)}"
+                                   border="1" class="attributes"
+                                   cellspacing="0" cellpadding="3">
+                            </table>
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
 
 </div>
 
@@ -192,153 +250,425 @@
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: nameIndex, attr: {href: '#constant' + nameIndex}"></a></td>
+    <td><a data-bind="text: '#' + nameIndex, attr: {href: $root.getConstantHref(nameIndex)}"></a></td>
     <td></td>
 </script>
 <script type="text/html" id="constant-8">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: stringIndex, attr: {href: '#constant' + stringIndex}"></a></td>
+    <td><a data-bind="text: '#' + stringIndex, attr: {href: $root.getConstantHref(stringIndex)}"></a></td>
     <td></td>
 </script>
 <script type="text/html" id="constant-9">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: classIndex, attr: {href: '#constant' + classIndex}"></a></td>
-    <td><a data-bind="text: nameTypeIndex, attr: {href: '#constant' + nameTypeIndex}"></a></td>
+    <td><a data-bind="text: '#' + classIndex, attr: {href: $root.getConstantHref(classIndex)}"></a></td>
+    <td><a data-bind="text: '#' + nameTypeIndex, attr: {href: $root.getConstantHref(nameTypeIndex)}"></a></td>
 </script>
 <script type="text/html" id="constant-10">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: classIndex, attr: {href: '#constant' + classIndex}"></a></td>
-    <td><a data-bind="text: nameTypeIndex, attr: {href: '#constant' + nameTypeIndex}"></a></td>
+    <td><a data-bind="text: '#' + classIndex, attr: {href: $root.getConstantHref(classIndex)}"></a></td>
+    <td><a data-bind="text: '#' + nameTypeIndex, attr: {href: $root.getConstantHref(nameTypeIndex)}"></a></td>
 </script>
 <script type="text/html" id="constant-11">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: classIndex, attr: {href: '#constant' + classIndex}"></a></td>
-    <td><a data-bind="text: nameTypeIndex, attr: {href: '#constant' + nameTypeIndex}"></a></td>
+    <td><a data-bind="text: '#' + classIndex, attr: {href: $root.getConstantHref(classIndex)}"></a></td>
+    <td><a data-bind="text: '#' + nameTypeIndex, attr: {href: $root.getConstantHref(nameTypeIndex)}"></a></td>
 </script>
 <script type="text/html" id="constant-12">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: nameIndex, attr: {href: '#constant' + nameIndex}"></a></td>
-    <td><a data-bind="text: descriptorIndex, attr: {href: '#constant' + descriptorIndex}"></a></td>
+    <td><a data-bind="text: '#' + nameIndex, attr: {href: $root.getConstantHref(nameIndex)}"></a></td>
+    <td><a data-bind="text: '#' + descriptorIndex, attr: {href: $root.getConstantHref(descriptorIndex)}"></a></td>
 </script>
 
 <!-- attributes -->
+<!-- ConstantValue (§4.7.2) -->
 <script type="text/html" id="ConstantValue">
-    <th data-bind="text: $index"></th>
-    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></td>
-    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
-    <td data-bind="text: attributeLength"></td>
-    <td><a data-bind="text: constantValueIndex, attr: {href: '#constant' + constantValueIndex}"></a></td>
-</script>
-<script type="text/html" id="Synthetic">
-    <th data-bind="text: $index"></th>
-    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></td>
-    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
-    <td data-bind="text: attributeLength"></td>
-    <td></td>
-</script>
-<script type="text/html" id="Signature">
-    <th data-bind="text: $index"></th>
-    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></td>
-    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
-    <td data-bind="text: attributeLength"></td>
-    <td><a
-            data-bind="text: signatureIndex, attr: {href: '#constant' + signatureIndex}"></a></td>
-</script>
-<script type="text/html" id="Deprecated">
-    <th data-bind="text: $index"></th>
-    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></td>
-    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
-    <td data-bind="text: attributeLength"></td>
-    <td></td>
-</script>
-<script type="text/html" id="RuntimeVisibleAnnotations">
-    <th data-bind="text: $index"></th>
-    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></td>
-    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
-    <td data-bind="text: numAnnotations"></td>
-    <td>
-        <table border="1" cellspacing="0" cellpadding="3">
-            <thead>
-            <tr>
-                <th>index</th>
-                <th>typeIndex</th>
-                <th>numElementValuePairs</th>
-                <th>elementValuePairs</th>
-            </tr>
-            </thead>
-            <tbody data-bind="foreach: annotations">
-            <tr>
-                <th data-bind="text: $index"></th>
-                <td data-bind="text: typeIndex"></td>
-                <td data-bind="text: numElementValuePairs"></td>
-                <td data-bind="if: numElementValuePairs > 0">
-                    <table border="1" cellspacing="0" cellpadding="3">
-                        <thead>
-                        <tr>
-                            <th>index</th>
-                            <th>elementNameIndex</th>
-                            <th>value</th>
-                        </tr>
-                        </thead>
-                        <tbody data-bind="foreach: elementValuePairs">
-                        <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </td>
-</script>
-<script type="text/html" id="RuntimeInvisibleAnnotations">
-    <th data-bind="text: $index"></th>
-    <td class="constant-utf8-value" data-bind="text: $root.getConstantUTF8Value($data.attributeNameIndex)"></td>
-    <td><a data-bind="text: attributeNameIndex, attr: {href: '#constant' + attributeNameIndex}"></a></td>
-    <td data-bind="text: numAnnotations"></td>
-    <td>
-        <table border="1" cellspacing="0" cellpadding="3">
-            <thead>
-            <tr>
-                <th>index</th>
-                <th>typeIndex</th>
-                <th>numElementValuePairs</th>
-                <th>elementValuePairs</th>
-            </tr>
-            </thead>
-            <tbody data-bind="foreach: annotations">
-            <tr>
-            <th data-bind="text: $index"></th>
-            <td data-bind="text: typeIndex"></td>
-            <td data-bind="text: numElementValuePairs"></td>
-            <td data-bind="if: numElementValuePairs > 0">
-                <table border="1" cellspacing="0" cellpadding="3">
-                    <thead>
-                    <tr>
-                        <th>index</th>
-                        <th>elementNameIndex</th>
-                        <th>value</th>
-                    </tr>
-                    </thead>
-                    <tbody data-bind="foreach: elementValuePairs">
-                    <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
-                    </tbody>
-            </tbody>
-        </table>
-    </td>
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
+        </td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>constant_value_index</th>
+        <td><a data-bind="text: '#' + constantValueIndex, attr: {href: $root.getConstantHref(constantValueIndex)}"></a>
+        </td>
     </tr>
     </tbody>
-    </table>
-    </td>
+</script>
+
+<!-- Code (§4.7.3) -->
+<script type="text/html" id="Code">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
+        </td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>max_stack</th>
+        <td data-bind="text: maxStack"></td>
+    </tr>
+    <tr>
+        <th>max_locals</th>
+        <td data-bind="text: maxLocals"></td>
+    </tr>
+    <tr>
+        <th>code_length</th>
+        <td data-bind="text: codeLength"></td>
+    </tr>
+    <tr>
+        <th>exception_table_length</th>
+        <td data-bind="text: exceptionTableLength"></td>
+    </tr>
+    <tr>
+        <th>attributes_count</th>
+        <td data-bind="text: attributesCount"></td>
+    </tr>
+    <tr>
+        <th colspan="2">attributes</th>
+    </tr>
+    <!-- ko foreach: attributes -->
+    <tr>
+        <td colspan="2" class="border-left">
+            <table data-bind="template: {name: $root.getConstantUTF8Value($data.attributeNameIndex)}" border="1"
+                   class="attributes"
+                   cellspacing="0" cellpadding="3">
+            </table>
+        </td>
+    </tr>
+    <!-- /ko -->
+    </tbody>
+</script>
+
+<!-- Synthetic (§4.7.8) -->
+<script type="text/html" id="Synthetic">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
+        </td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    </tbody>
+</script>
+
+<!-- Signature (§4.7.9) -->
+<script type="text/html" id="Signature">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
+        </td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>signature_index</th>
+        <td><a data-bind="text: '#' + signatureIndex, attr: {href: $root.getConstantHref(signatureIndex)}"></a></td>
+    </tr>
+    </tbody>
+</script>
+
+<!-- SourceFile (§4.7.10) -->
+<script type="text/html" id="SourceFile">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
+        </td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>sourcefile_index</th>
+        <td><a data-bind="text: '#' + sourcefileIndex, attr: {href: $root.getConstantHref(sourcefileIndex)}"></a></td>
+    </tr>
+    </tbody>
+</script>
+
+<!-- LineNumberTable (§4.7.12) -->
+<script type="text/html" id="LineNumberTable">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
+        </td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>line_number_table_length</th>
+        <td data-bind="text: lineNumberTableLength"></td>
+    </tr>
+    <tr>
+        <th colspan="2">line_number_table</th>
+    </tr>
+    <tr>
+        <td colspan="2" class="border-left">
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>start_pc</th>
+                    <th>line_number</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: lineNumberTable">
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="text: startPC"></td>
+                    <td data-bind="text: lineNumber"></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</script>
+
+<!-- LocalVariableTable (§4.7.13) -->
+<script type="text/html" id="LocalVariableTable">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
+        </td>
+    </tr>
+    <tr>
+        <th>local_variable_table_length</th>
+        <td data-bind="text: localVariableTableLength"></td>
+
+    </tr>
+    <tr>
+        <th colspan="2">local_variable_table</th>
+    </tr>
+    <tr>
+        <td colspan="2" class="border-left">
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>start_pc</th>
+                    <th>length</th>
+                    <th>name_index</th>
+                    <th>descriptor_index</th>
+                    <th>index</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: localVariableTable">
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="text: startPC"></td>
+                    <td data-bind="text: length"></td>
+                    <td data-bind="text: nameIndex"></td>
+                    <td data-bind="text: descriptorIndex"></td>
+                    <td data-bind="text: index"></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</script>
+
+<!-- Deprecated (§4.7.15) -->
+<script type="text/html" id="Deprecated">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
+        </td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    </tbody>
+</script>
+<script type="text/html" id="RuntimeVisibleAnnotations">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
+        </td>
+    </tr>
+    <tr>
+        <th>num_annotations</th>
+        <td data-bind="text: numAnnotations"></td>
+    </tr>
+    <tr>
+        <th>annotations</th>
+        <td>
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>type_index</th>
+                    <th>num_element_value_pairs</th>
+                    <th>element_value_pairs</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: annotations">
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="text: typeIndex"></td>
+                    <td data-bind="text: numElementValuePairs"></td>
+                    <td data-bind="if: numElementValuePairs > 0">
+                        <table border="1" cellspacing="0" cellpadding="3">
+                            <thead>
+                            <tr>
+                                <th>index</th>
+                                <th>element_name_index</th>
+                                <th>value</th>
+                            </tr>
+                            </thead>
+                            <tbody data-bind="foreach: elementValuePairs">
+                            <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</script>
+<script type="text/html" id="RuntimeInvisibleAnnotations">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
+        </td>
+    </tr>
+    <tr>
+        <th>num_annotations</th>
+        <td data-bind="text: numAnnotations"></td>
+    </tr>
+    <tr>
+        <th>annotations</th>
+        <td>
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>type_index</th>
+                    <th>num_element_value_pairs</th>
+                    <th>element_value_pairs</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: annotations">
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="text: typeIndex"></td>
+                    <td data-bind="text: numElementValuePairs"></td>
+                    <td data-bind="if: numElementValuePairs > 0">
+                        <table border="1" cellspacing="0" cellpadding="3">
+                            <thead>
+                            <tr>
+                                <th>index</th>
+                                <th>element_name_index</th>
+                                <th>value</th>
+                            </tr>
+                            </thead>
+                            <tbody data-bind="foreach: elementValuePairs">
+                            <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
 </script>
 
 <!-- element value -->
@@ -350,7 +680,7 @@
             <thead>
             <tr>
                 <th>tag</th>
-                <th>constValueIndex</th>
+                <th>const_value_index</th>
             </tr>
             </thead>
             <tbody>
@@ -370,8 +700,8 @@
             <thead>
             <tr>
                 <th>tag</th>
-                <th>typeNameIndex</th>
-                <th>constNameIndex</th>
+                <th>type_name_index</th>
+                <th>const_name_index</th>
             </tr>
             </thead>
             <tbody>
@@ -392,7 +722,7 @@
             <thead>
             <tr>
                 <th>tag</th>
-                <th>constValueIndex</th>
+                <th>const_value_index</th>
             </tr>
             </thead>
             <tbody>
@@ -412,7 +742,7 @@
             <thead>
             <tr>
                 <th>tag</th>
-                <th>elementNameIndex</th>
+                <th>element_name_index</th>
                 <th>value</th>
             </tr>
             </thead>
@@ -430,7 +760,7 @@
             <thead>
             <tr>
                 <th>tag</th>
-                <th>numValues</th>
+                <th>num_values</th>
                 <th>values</th>
             </tr>
             </thead>
@@ -457,3 +787,4 @@
     </td>
 </script>
 </html>
+

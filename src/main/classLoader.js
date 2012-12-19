@@ -42,7 +42,7 @@ if (typeof JVM === 'undefined') {
                 readFieldsCount();
                 readFields();
                 readMethodsCount();
-
+                readMethods();
 
                 return klass;
             }
@@ -341,7 +341,7 @@ if (typeof JVM === 'undefined') {
             attr.attributeNameIndex = getU2();
             var attributeName = klass.constantPool[attr.attributeNameIndex];
 
-
+            console.log(attributeName.bytes);
             var fn;
             switch (attributeName.bytes) {
                 case 'ConstantValue':
@@ -353,15 +353,15 @@ if (typeof JVM === 'undefined') {
                     break;
 
                 case 'StackMapTable':
-
+                    fn = getStackMapTable;
                     break;
 
                 case 'Exceptions':
-
+                    fn = getExceptions;
                     break;
 
                 case 'InnerClasses':
-
+                    fn = getInnerClasses;
                     break;
 
                 case 'EnclosingMethod':
@@ -377,7 +377,7 @@ if (typeof JVM === 'undefined') {
                     break;
 
                 case 'SourceFile':
-
+                    fn = getSourceFile;
                     break;
 
                 case 'SourceDebugExtension':
@@ -385,12 +385,12 @@ if (typeof JVM === 'undefined') {
                     break;
 
                 case 'LineNumberTable':
-
+                    fn = getLineNumberTable;
                     break;
 
 
                 case 'LocalVariableTable':
-
+                    fn = getLocalVariableTable;
                     break;
 
                 case 'LocalVariableTypeTable':
@@ -441,11 +441,116 @@ if (typeof JVM === 'undefined') {
         }
 
         function getCode(attr) {
+            var code = [],
+                exceptionTable = [],
+                attributes = [];
+
+
             attr.attributeLength = getU4();
             attr.maxStack = getU2();
             attr.maxLocals = getU2();
             attr.codeLength = getU4();
+
+
+            var i, len = attr.codeLength;
+            for (i = 0; i < len; i++) {
+                code.push(getU1());
+            }
+            attr.code = code;
+
+            attr.exceptionTableLength = getU2();
+
+            len = attr.exceptionTableLength;
+            for (i = 0; i < len; i++) {
+                exceptionTable.push(getExceptionTable());
+            }
+
+            attr.exceptionTable = exceptionTable;
+            attr.attributesCount = getU2();
+
+
+            len = attr.attributesCount;
+            for (i = 0; i < len; i++) {
+                attributes.push(getAttribute());
+            }
+
+            attr.attributes = attributes;
+
         }
+
+        function getExceptionTable() {
+            var exceptionTable = {};
+            exceptionTable.startPC = getU2();
+            exceptionTable.endPC = getU2();
+            exceptionTable.handlerPC = getU2();
+            exceptionTable.catchType = getU2();
+
+            return exceptionTable;
+        }
+
+        function getStackMapTable(attr) {
+            var i,
+                len,
+                entries = [];
+
+            attr.attributeLength = getU4();
+            attr.numberOfEntries = getU2();
+
+            len = attr.numberOfEntries;
+            for (i = 0; i < len; i++) {
+
+            }
+
+            attr.entries = entries;
+
+        }
+
+        function getStackMapFrame() {
+            // TODO
+        }
+
+        function getExceptions(attr) {
+            var i,
+                len,
+                exceptionIndexTable = [];
+
+            attr.attributeLength = getU4();
+            attr.numberOfExceptions = getU2();
+
+            len = attr.numberOfExceptions;
+            for (i = 0; i < len; i++) {
+                exceptionIndexTable.push(getU2());
+            }
+
+            attr.exceptionIndexTable = exceptionIndexTable;
+        }
+
+        function getInnerClasses(attr) {
+            var i,
+                len,
+                classes = [];
+
+            attr.attributeLength = getU4();
+            attr.numberOfClasses = getU2();
+
+            len = attr.numberOfClasses;
+            for (i = 0; i < len; i++) {
+                classes.push(getClasses());
+            }
+            attr.classes = classes;
+        }
+
+        function getClasses() {
+            var classes = {};
+
+            classes.innerClassInfoIndex = getU2();
+            classes.outerClassInfoIndex = getU2();
+            classes.innerNameIndex = getU2();
+            classes.innerClassAccessFlags = getU2();
+
+            return classes;
+        }
+
 
         function getSynthetic(attr) {
             attr.attributeLength = getU4();
@@ -456,6 +561,55 @@ if (typeof JVM === 'undefined') {
             attr.attributeLength = getU4();
             attr.signatureIndex = getU2();
 
+        }
+
+        function getSourceFile(attr) {
+            attr.attributeLength = getU4();
+            attr.sourcefileIndex = getU2();
+        }
+
+
+        function getLineNumberTable(attr) {
+            var i,
+                len,
+                lineNumberTable = [],
+                table;
+
+            attr.attributeLength = getU4();
+            attr.lineNumberTableLength = getU2();
+
+            len = attr.lineNumberTableLength;
+            for (i = 0; i < len; i++) {
+                table = {};
+                table.startPC = getU2();
+                table.lineNumber = getU2();
+                lineNumberTable.push(table);
+            }
+
+            attr.lineNumberTable = lineNumberTable;
+        }
+
+        function getLocalVariableTable(attr) {
+            var i,
+                len,
+                localVariableTable = [],
+                table;
+
+            attr.attributeLength = getU4();
+            attr.localVariableTableLength = getU2();
+
+            len = attr.localVariableTableLength;
+            for (i = 0; i < len; i++) {
+                table = {};
+                table.startPC = getU2();
+                table.length = getU2();
+                table.nameIndex = getU2();
+                table.descriptorIndex = getU2();
+                table.index = getU2();
+                localVariableTable.push(table);
+            }
+
+            attr.localVariableTable = localVariableTable;
         }
 
         function getDeprecated(attr) {
@@ -569,7 +723,7 @@ if (typeof JVM === 'undefined') {
             methodInfo.descriptorIndex = getU2();
             methodInfo.attributesCount = getU2();
 
-            var count = info.attributesCount;
+            var count = methodInfo.attributesCount;
             var attributes = [];
 
             for (var i = 0; i < count; i++) {
