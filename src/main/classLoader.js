@@ -404,13 +404,12 @@ if (typeof JVM === 'undefined') {
                     break;
 
                 case 'SourceDebugExtension':
-
+                    fn = getSourceDebugExtension;
                     break;
 
                 case 'LineNumberTable':
                     fn = getLineNumberTable;
                     break;
-
 
                 case 'LocalVariableTable':
                     fn = getLocalVariableTable;
@@ -433,19 +432,19 @@ if (typeof JVM === 'undefined') {
                     break;
 
                 case 'RuntimeVisibleParameterAnnotations':
-
+                    fn = getRuntimeVisibleParameterAnnotations;
                     break;
 
                 case 'RuntimeInvisibleParameterAnnotations':
-
+                    fn = getRuntimeInvisibleParameterAnnotations;
                     break;
 
                 case 'AnnotationDefault':
-
+                    fn = getAnnotationDefault;
                     break;
 
                 case 'BootstrapMethods':
-
+                    fn = getBootstrapMethods;
                     break;
 
                 default :
@@ -684,6 +683,18 @@ if (typeof JVM === 'undefined') {
             attr.sourcefileIndex = getU2();
         }
 
+        function getSourceDebugExtension(attr) {
+            var i,
+                len,
+                debugExtension = [];
+
+            len = attr.attributeLength = getU4();
+            for (i = 0; i < len; i++) {
+                debugExtension.push(getU1());
+            }
+
+        }
+
 
         function getLineNumberTable(attr) {
             var i,
@@ -769,10 +780,63 @@ if (typeof JVM === 'undefined') {
 
         }
 
-        function getAnnotations(attr) {
-            var annotations = [];
+        function getRuntimeVisibleParameterAnnotations(attr) {
+            var i,
+                j,
+                len,
+                jLen,
+                parameterAnnotations = [],
+                annotation;
 
-            var i = 0, len = attr.numAnnotations;
+            attr.attributeLength = getU4();
+            len = attr.numParameters = getU1();
+            for (i = 0; i < len; i++) {
+                annotation = {};
+                annotation.numAnnotations = getU2();
+                annotation.annotations = [];
+                for (j = 0; j < jLen; j++) {
+                    annotation.annotations.push(getAnnotation());
+                }
+                parameterAnnotations.push(annotation);
+            }
+
+            attr.parameterAnnotations = parameterAnnotations;
+
+        }
+
+        function getRuntimeInvisibleParameterAnnotations(attr) {
+            var i,
+                j,
+                len,
+                jLen,
+                parameterAnnotations = [],
+                annotation;
+
+            attr.attributeLength = getU4();
+            len = attr.numParameters = getU1();
+            for (i = 0; i < len; i++) {
+                annotation = {};
+                annotation.numAnnotations = getU2();
+                annotation.annotations = [];
+                for (j = 0; j < jLen; j++) {
+                    annotation.annotations.push(getAnnotation());
+                }
+                parameterAnnotations.push(annotation);
+            }
+
+            attr.parameterAnnotations = parameterAnnotations;
+
+        }
+
+        function getAnnotationDefault(attr) {
+            attr.attributeLength = getU4();
+            attr.defaultValue = getElementValue();
+        }
+
+        function getAnnotations(attr) {
+            var annotations = [],
+                i = 0,
+                len = attr.numAnnotations;
 
             for (; i < len; i++) {
 
@@ -851,6 +915,36 @@ if (typeof JVM === 'undefined') {
 
 
             }
+        }
+
+        function getBootstrapMethods(attr) {
+            var i,
+                len,
+                bootstrapMethods = [];
+
+            attr.attributeLength = getU4();
+            len = attr.numBootstrapMethods = getU2();
+            for (i = 0; i < len; i++) {
+                bootstrapMethods.push(getBootstrapMethod());
+            }
+
+            attr.bootstrapMethods = bootstrapMethods;
+        }
+
+        function getBootstrapMethod() {
+            var i,
+                len,
+                bootstrapArguments = [];
+
+            method = {};
+            method.bootstrapMethodRef = getU2();
+            len = method.numBootstrapArguments = getU2();
+
+            for (i = 0; i < len; i++) {
+                bootstrapArguments.push(getU2());
+            }
+            method.bootstrapArguments = bootstrapArguments;
+            return method;
         }
 
         function getMethodInfo() {

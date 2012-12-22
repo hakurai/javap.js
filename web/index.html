@@ -829,6 +829,8 @@
     </tr>
     </tbody>
 </script>
+
+<!-- RuntimeVisibleAnnotations (§4.7.16) -->
 <script type="text/html" id="RuntimeVisibleAnnotations">
     <thead>
     <tr>
@@ -840,6 +842,10 @@
     <tr>
         <th>attribute_name_index</th>
         <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
     </tr>
     <tr>
         <th>num_annotations</th>
@@ -883,6 +889,8 @@
     </tr>
     </tbody>
 </script>
+
+<!-- RuntimeInvisibleAnnotations (§4.7.17) -->
 <script type="text/html" id="RuntimeInvisibleAnnotations">
     <thead>
     <tr>
@@ -894,6 +902,10 @@
     <tr>
         <th>attribute_name_index</th>
         <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
     </tr>
     <tr>
         <th>num_annotations</th>
@@ -927,6 +939,97 @@
                             </thead>
                             <tbody data-bind="foreach: elementValuePairs">
                             <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</script>
+
+
+<!-- AnnotationDefault (§4.7.20) -->
+<script type="text/html" id="AnnotationDefault">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th colspan="2">element_value</th>
+    </tr>
+    <tr>
+        <table border="1" cellspacing="0" cellpadding="3">
+            <tbody>
+            <tr data-bind="template: {name: $root.elementValueTemplate(elementValue.tag), data:elementValue}"></tr>
+            </tbody>
+        </table>
+    </tr>
+    </tbody>
+</script>
+
+<!-- BootstrapMethods (§4.7.21) -->
+<script type="text/html" id="BootstrapMethods">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>num_bootstrap_methods</th>
+        <td data-bind="text: numBootstrapMethods"></td>
+    </tr>
+    <tr>
+        <th>bootstrap_methods</th>
+        <td>
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>bootstrap_method_ref</th>
+                    <th>num_bootstrap_arguments</th>
+                    <th>bootstrap_arguments</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: bootstrapMethods">
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="constantPool: bootstrapMethodRef"></td>
+                    <td data-bind="text: numBootstrapArguments"></td>
+                    <td data-bind="if: numBootstrapArguments > 0">
+                        <table border="1" cellspacing="0" cellpadding="3">
+                            <thead>
+                            <tr>
+                                <th>BootstrapArgument</th>
+                            </tr>
+                            </thead>
+                            <tbody data-bind="foreach: bootstrapArguments">
+                            <tr>
+                                <td data-bind="constantPool: $data"></td>
+                            </tr>
                             </tbody>
                         </table>
                     </td>
