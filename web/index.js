@@ -21,12 +21,16 @@ var index = {};
         update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var value = valueAccessor();
             if (value && value !== '') {
-                $(element).html('<a href="#constant' + value + '">' + '#' + value + '</a>');
+                $(element).html(constantPoolLink(value));
             } else {
                 $(element).html('');
             }
         }
     };
+
+    function constantPoolLink(value){
+        return '<a href="#constant' + value + '">' + '#' + value + '</a>';
+    }
 
     ko.bindingHandlers.method = {
         update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
@@ -165,7 +169,7 @@ var index = {};
     function signExtensionShort(bytecode) {
         var short = bytecode.operand[0] << 8 | bytecode.operand[1];
 
-        return op0 > 32768 ? short | 0xFFFF0000 : short; //符号拡張
+        return short > 32768 ? short | 0xFFFF0000 : short; //符号拡張
     }
 
     function printConstantPoolValue(constantPool, index) {
@@ -188,7 +192,7 @@ var index = {};
 
         }
 
-        return '#' + index + desc;
+        return constantPoolLink(index) + desc;
     }
 
     function printField(constantPool, value) {

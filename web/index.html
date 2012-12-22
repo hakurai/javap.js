@@ -207,6 +207,8 @@
     <td></td>
     <td></td>
 </script>
+
+<!-- CONSTANT_Utf8 -->
 <script type="text/html" id="constant-1">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
@@ -214,13 +216,8 @@
     <td data-bind="text: length"></td>
     <td data-bind="text: bytes"></td>
 </script>
-<script type="text/html" id="constant-2">
-    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
-    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
-    <td data-bind="text: tag"></td>
-    <td data-bind="text: bytes"></td>
-    <td></td>
-</script>
+
+<!-- CONSTANT_Integer -->
 <script type="text/html" id="constant-3">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
@@ -228,6 +225,8 @@
     <td data-bind="text: bytes"></td>
     <td></td>
 </script>
+
+<!-- CONSTANT_Float -->
 <script type="text/html" id="constant-4">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
@@ -235,6 +234,8 @@
     <td data-bind="text: bytes"></td>
     <td></td>
 </script>
+
+<!-- CONSTANT_Long -->
 <script type="text/html" id="constant-5">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
@@ -242,6 +243,8 @@
     <td data-bind="text: highBytes"></td>
     <td data-bind="text: lowBytes"></td>
 </script>
+
+<!-- CONSTANT_Double -->
 <script type="text/html" id="constant-6">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
@@ -249,6 +252,8 @@
     <td data-bind="text: highBytes"></td>
     <td data-bind="text: lowBytes"></td>
 </script>
+
+<!-- CONSTANT_Class -->
 <script type="text/html" id="constant-7">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
@@ -256,6 +261,8 @@
     <td data-bind="constantPool: nameIndex"></td>
     <td></td>
 </script>
+
+<!-- CONSTANT_String -->
 <script type="text/html" id="constant-8">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
@@ -263,6 +270,8 @@
     <td data-bind="constantPool: stringIndex"></td>
     <td></td>
 </script>
+
+<!-- CONSTANT_Fieldref -->
 <script type="text/html" id="constant-9">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
@@ -270,6 +279,8 @@
     <td data-bind="constantPool: classIndex"></td>
     <td data-bind="constantPool: nameTypeIndex"></td>
 </script>
+
+<!-- CONSTANT_Methodref -->
 <script type="text/html" id="constant-10">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
@@ -277,6 +288,8 @@
     <td data-bind="constantPool: classIndex"></td>
     <td data-bind="constantPool: nameTypeIndex"></td>
 </script>
+
+<!-- CONSTANT_InterfaceMethodref -->
 <script type="text/html" id="constant-11">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
@@ -284,12 +297,41 @@
     <td data-bind="constantPool: classIndex"></td>
     <td data-bind="constantPool: nameTypeIndex"></td>
 </script>
+
+<!-- CONSTANT_NameAndType -->
 <script type="text/html" id="constant-12">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
     <td data-bind="constantPool: nameIndex"></td>
     <td data-bind="constantPool: descriptorIndex"></td>
+</script>
+
+<!-- CONSTANT_MethodHandle -->
+<script type="text/html" id="constant-15">
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: referenceKind"></td>
+    <td data-bind="constantPool: referenceIndex"></td>
+</script>
+
+<!-- CONSTANT_MethodType -->
+<script type="text/html" id="constant-16">
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="constantPool: descriptorIndex"></td>
+    <td></td>
+</script>
+
+<!-- CONSTANT_InvokeDynamic -->
+<script type="text/html" id="constant-18">
+    <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
+    <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
+    <td data-bind="text: tag"></td>
+    <td data-bind="text: bootstrapMethodAttrIndex"></td>
+    <td data-bind="text: nameAndTypeIndex"></td>
 </script>
 
 <!-- attributes -->
@@ -466,6 +508,85 @@
     </tbody>
 </script>
 
+<!-- InnerClasses (§4.7.6) -->
+<script type="text/html" id="InnerClasses">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>number_of_classes</th>
+        <td data-bind="text: numberOfClasses"></td>
+    </tr>
+    <tr>
+        <th colspan="2">classes</th>
+    </tr>
+    <tr>
+        <td colspan="2" class="border-left">
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>inner_class_info_index</th>
+                    <th>outer_class_info_index</th>
+                    <th>inner_name_index</th>
+                    <th>inner_class_access_flags</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: exceptionIndexTable">
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="constantPool: innerClassInfoIndex"></td>
+                    <td data-bind="text: outerClassInfoIndex"></td>
+                    <td data-bind="text: innerNameIndex"></td>
+                    <td data-bind="text: innerClassAccessFlags"></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</script>
+
+<!-- EnclosingMethod (§4.7.7) -->
+<script type="text/html" id="EnclosingMethod">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>class_index</th>
+        <td data-bind="text: classIndex"></td>
+    </tr>
+    <tr>
+        <th>method_index</th>
+        <td data-bind="text: methodIndex"></td>
+    </tr>
+    </tbody>
+</script>
+
 <!-- Synthetic (§4.7.8) -->
 <script type="text/html" id="Synthetic">
     <thead>
@@ -595,6 +716,10 @@
         <td data-bind="constantPool: attributeNameIndex"></td>
     </tr>
     <tr>
+        <th>attribute_length</th>
+        <td data-bind="constantPool: attributeLength"></td>
+    </tr>
+    <tr>
         <th>local_variable_table_length</th>
         <td data-bind="text: localVariableTableLength"></td>
 
@@ -622,6 +747,60 @@
                     <td data-bind="text: length"></td>
                     <td data-bind="constantPool: nameIndex"></td>
                     <td data-bind="constantPool: descriptorIndex"></td>
+                    <td data-bind="text: index"></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</script>
+
+<!-- LocalVariableTypeTable (§4.7.14) -->
+<script type="text/html" id="LocalVariableTypeTable">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="constantPool: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>local_variable_type_table_length</th>
+        <td data-bind="text: localVariableTypeTableLength"></td>
+
+    </tr>
+    <tr>
+        <th colspan="2">local_variable_type_table</th>
+    </tr>
+    <tr>
+        <td colspan="2" class="border-left">
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>start_pc</th>
+                    <th>length</th>
+                    <th>name_index</th>
+                    <th>signature_index</th>
+                    <th>index</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: localVariableTypeTable">
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="text: startPC"></td>
+                    <td data-bind="text: length"></td>
+                    <td data-bind="constantPool: nameIndex"></td>
+                    <td data-bind="constantPool: signatureIndex"></td>
                     <td data-bind="text: index"></td>
                 </tr>
                 </tbody>

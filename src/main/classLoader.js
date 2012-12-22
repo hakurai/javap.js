@@ -217,13 +217,13 @@ if (typeof JVM === 'undefined') {
                     fn = getConstantNameAndType;
                     break;
                 case 15:
-//                    fn = getConstantMethodHandle; //TODO
+                    fn = getConstantMethodHandle;
                     break;
                 case 16:
-//                    fn = getConstantMethodType; //TODO
+                    fn = getConstantMethodType;
                     break;
                 case 18:
-//                    fn = getConstantInvokeDynamic; //TODO
+                    fn = getConstantInvokeDynamic;
                     break;
                 default:
                     throw new Error('LinkageError');
@@ -326,6 +326,20 @@ if (typeof JVM === 'undefined') {
 
         }
 
+        function getConstantMethodHandle(info) {
+            info.referenceKind = getU1();
+            info.referenceIndex = getU2();
+        }
+
+        function getConstantMethodType(info) {
+            info.descriptorIndex = getU2();
+        }
+
+        function getConstantInvokeDynamic(info) {
+            info.bootstrapMethodAttrIndex = getU2();
+            info.nameAndTypeIndex = getU2();
+        }
+
         function getFieldInfo() {
             var info = {};
             info.accessFlags = getU2();
@@ -374,7 +388,7 @@ if (typeof JVM === 'undefined') {
                     break;
 
                 case 'EnclosingMethod':
-
+                    fn = getEnclosingMethod;
                     break;
 
                 case 'Synthetic':
@@ -403,7 +417,7 @@ if (typeof JVM === 'undefined') {
                     break;
 
                 case 'LocalVariableTypeTable':
-
+                    fn = getLocalVariableTypeTable;
                     break;
 
                 case 'Deprecated':
@@ -561,6 +575,11 @@ if (typeof JVM === 'undefined') {
             return classes;
         }
 
+        function getEnclosingMethod(attr){
+            attr.attributeLength = getU4();
+            attr.classIndex = getU2();
+            attr.methodIndex = getU2();
+        }
 
         function getSynthetic(attr) {
             attr.attributeLength = getU4();
@@ -620,6 +639,28 @@ if (typeof JVM === 'undefined') {
             }
 
             attr.localVariableTable = localVariableTable;
+        }
+
+        function getLocalVariableTypeTable(attr){
+            var i,
+                len,
+                localVariableTypeTable =[],
+                table;
+
+            attr.attributeLength = getU4();
+            attr.localVariableTypeTableLength = getU2();
+            len = attr.localVariableTypeTableLength;
+            for (i = 0; i < len; i++) {
+                table = {};
+                table.startPC = getU2();
+                table.length = getU2();
+                table.nameIndex = getU2();
+                table.signatureIndex = getU2();
+                table.index = getU2();
+                localVariableTypeTable.push(table);
+            }
+
+            attr.localVariableTypeTable = localVariableTypeTable;
         }
 
         function getDeprecated(attr) {
