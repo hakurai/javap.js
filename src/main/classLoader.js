@@ -522,7 +522,7 @@ if (typeof JVM === 'undefined') {
 
             len = attr.numberOfEntries;
             for (i = 0; i < len; i++) {
-
+                entries.push(getStackMapFrame());
             }
 
             attr.entries = entries;
@@ -530,8 +530,95 @@ if (typeof JVM === 'undefined') {
         }
 
         function getStackMapFrame() {
-            // TODO
+            var frame = {};
+            frame.frameType = getU1();
+
+            if (frame.frameType < 64) {
+                //same_frame
+            } else if (frame.frameType < 128) {
+                //same_locals_1_stack_item_frame
+                frame.stack = getVerificationTypeInfo();
+            } else if (frame.frameType === 247) {
+                //same_locals_1_stack_item_frame_extended
+                frame.offsetDelta = getU2();
+                frame.stack = getVerificationTypeInfo();
+            } else if (248 <= frame.frameType && frame.frameType >= 250) {
+                //chop_frame
+                frame.offsetDelta = getU2();
+            } else if (frame.frameType === 251) {
+                //same_frame_extended
+                frame.offsetDelta = getU2();
+            } else if (252 <= frame.frameType && frame.frameType >= 254) {
+                //append_frame
+                getAppendFrame(frame);
+            } else if (frame.frameType === 255) {
+                //full_frame
+                getFullFrame(frame);
+            }
+
         }
+
+
+        function getAppendFrame(frame) {
+            var i, len = frame.frameType - 251;
+            frame.offsetDelta = getU2();
+            frame.locals = [];
+
+            for (i = 0; i < len; i++) {
+                frame.locals.push(getVerificationTypeInfo());
+            }
+
+        }
+
+        function getFullFrame(frame) {
+            var i, len;
+            frame.offsetDelta = getU2();
+            frame.numberOfLocals = getU2();
+            frame.locals = [];
+
+            len = numberOfLocals;
+            for (i = 0; i < len; i++) {
+                frame.locals.push(getVerificationTypeInfo());
+            }
+
+            len = frame.numberOfStackItems = getU2();
+            frame.stack = [];
+            for (i = 0; i < len; i++) {
+                frame.stack.push(getVerificationTypeInfo());
+            }
+        }
+
+//      verification_type_info
+
+        function getVerificationTypeInfo() {
+            var verificationTypeInfo = {};
+            verificationTypeInfo.tag = getU1();
+
+            if (verificationTypeInfo.tag === 0) {
+                //Top_variable_info
+            } else if (verificationTypeInfo.tag === 1) {
+                //Integer_variable_info
+            } else if (verificationTypeInfo.tag === 2) {
+                //Float_variable_info
+            } else if (verificationTypeInfo.tag === 3) {
+                //Double_variable_info
+            } else if (verificationTypeInfo.tag === 4) {
+                //Long_variable_info
+            } else if (verificationTypeInfo.tag === 5) {
+                //Null_variable_info
+            } else if (verificationTypeInfo.tag === 6) {
+                //UninitializedThis_variable_info
+            } else if (verificationTypeInfo.tag === 7) {
+                //Object_variable_info
+                verificationTypeInfo.cpoolIndex = getU2();
+            } else if (verificationTypeInfo.tag === 8) {
+                //Uninitialized_variable_info
+                verificationTypeInfo.offset = getU2();
+            } else {
+                throw new Error('LinkageError');
+            }
+        }
+
 
         function getExceptions(attr) {
             var i,
@@ -575,7 +662,7 @@ if (typeof JVM === 'undefined') {
             return classes;
         }
 
-        function getEnclosingMethod(attr){
+        function getEnclosingMethod(attr) {
             attr.attributeLength = getU4();
             attr.classIndex = getU2();
             attr.methodIndex = getU2();
@@ -641,10 +728,10 @@ if (typeof JVM === 'undefined') {
             attr.localVariableTable = localVariableTable;
         }
 
-        function getLocalVariableTypeTable(attr){
+        function getLocalVariableTypeTable(attr) {
             var i,
                 len,
-                localVariableTypeTable =[],
+                localVariableTypeTable = [],
                 table;
 
             attr.attributeLength = getU4();
