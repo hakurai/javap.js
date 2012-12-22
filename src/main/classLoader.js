@@ -216,6 +216,15 @@ if (typeof JVM === 'undefined') {
                 case 12:
                     fn = getConstantNameAndType;
                     break;
+                case 15:
+//                    fn = getConstantMethodHandle; //TODO
+                    break;
+                case 16:
+//                    fn = getConstantMethodType; //TODO
+                    break;
+                case 18:
+//                    fn = getConstantInvokeDynamic; //TODO
+                    break;
                 default:
                     throw new Error('LinkageError');
 

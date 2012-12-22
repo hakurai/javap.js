@@ -65,6 +65,11 @@ td.constant-type,
     color: #6e641d;
 }
 
+.method {
+    width: 100%;
+    padding-right: 30px;
+}
+
 .method th {
     background: #a4af9f;
 }
@@ -74,7 +79,8 @@ td.constant-type,
 }
 
 .attributes {
-    width: 90%;
+    width: 100%;
+    padding-right: 30px;
 }
 
 .attributes tbody th {
@@ -93,6 +99,11 @@ td.constant-type,
     width: 10px;
 }
 
+.code-table {
+    width: 100%;
+    padding-right: 30px;
+}
+
 .code th {
     color: #FFFFFF;
     background: #757a7b;
@@ -101,4 +112,12 @@ td.constant-type,
 .code td {
     color: #FFFFFF;
     background: #48494e;
+}
+
+.operand {
+    padding-left: 30px;
+}
+
+.comment {
+    color: #48494e;
 }

@@ -7,21 +7,215 @@ var index = {};
         readFile(file);
     });
 
+    $('#file').change(function (e) {
+        e.preventDefault();
+        var file = e.target.files[0];
+        readFile(file);
+    });
+
+    function escape(text) {
+        return $('<div>').text(text).html();
+    }
 
     ko.bindingHandlers.constantPool = {
         update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var value = valueAccessor();
-            if(value && value !== ''){
+            if (value && value !== '') {
                 $(element).html('<a href="#constant' + value + '">' + '#' + value + '</a>');
-            }else{
+            } else {
                 $(element).html('');
             }
         }
     };
 
+    ko.bindingHandlers.method = {
+        update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var value = valueAccessor();
+            if (value && value !== '') {
+                $(element).text(
+                    bindingContext.$root.getConstantUTF8Value(value.nameIndex) +
+                        bindingContext.$root.getConstantUTF8Value(value.descriptorIndex)
+                );
+            } else {
+                $(element).text('');
+            }
+        }
+    };
+
+    ko.bindingHandlers.bytecode = {
+        update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var value = valueAccessor(),
+                name,
+                operand;
+
+            if (value && value !== '') {
+                name = JVM.ByteCodeParser.BYTECODE_DETAIL[value.opecode].name;
+                operand = printOperand(value, bindingContext.$root.klass.constantPool);
+
+                $(element).html(name + '<span class="operand">' + operand + '</span>');
+            } else {
+                $(element).text('');
+            }
+        }
+    };
+
+    function printOperand(bytecode, constantPool) {
+        var op0, op1, op2, op3, index;
+
+
+        if (bytecode.operand.length === 0) {
+            return ''
+        } else if (bytecode.operand.length === 1) {
+
+            switch (bytecode.opecode) {
+                case 16: //bipush
+                    return signExtensionByte(bytecode.operand[0]);
+
+                case 18: //ldc
+                    op0 = bytecode.operand[0];
+                    return printConstantPoolValue(constantPool, op0);
+
+                default:
+                    return bytecode.operand[0];
+            }
+
+        } else if (bytecode.operand.length === 2) {
+            op0 = bytecode.operand[0];
+            op1 = bytecode.operand[1];
+
+            switch (bytecode.opecode) {
+                case 17: //sipush
+                case 198: //ifnull
+                case 199: //ifnonnull
+                    return signExtensionShort(bytecode);
+
+                case 19: //ldc_w
+                case 178: //getstatic
+                case 179: //putstatic
+                case 180: //getfield
+                case 181: //putfield
+                case 182: //invokevirtual
+                case 183: //invokespecial
+                case 184: //invokestatic
+                case 187: //new
+                case 189: //anewarray
+                case 192: //checkcast
+                case 193: //instanceof
+                    index = op0 << 8 | op1;
+                    return printConstantPoolValue(constantPool, index);
+
+                case 132: //iinc
+                    return op0 + '  ' + signExtensionByte(op1);
+
+                case 153: //if<cond>
+                case 154:
+                case 155:
+                case 156:
+                case 157:
+                case 158:
+                case 159: //if_icmp<cond>
+                case 160:
+                case 161:
+                case 162:
+                case 163:
+                case 164:
+                case 167: //goto
+                case 168: //jsr
+                    return bytecode.pc + (op0 << 8 | op1);
+
+                default:
+                    return op0 + ', ' + op1;
+            }
+
+        } else if (bytecode.operand.length === 3) {
+            op0 = bytecode.operand[0];
+            op1 = bytecode.operand[1];
+            op2 = bytecode.operand[2];
+            //multianewarray
+            index = op0 << 8 | op1;
+            return printConstantPoolValue(constantPool, index) + ', ' + op2;
+
+        } else if (bytecode.operand.length === 4) {
+            op0 = bytecode.operand[0];
+            op1 = bytecode.operand[1];
+            op2 = bytecode.operand[2];
+            op3 = bytecode.operand[3];
+
+            switch (bytecode.opecode) {
+
+                case 185: //invokeinterface
+                    index = op0 << 8 | op1;
+                    return printConstantPoolValue(constantPool, index) + ', ' + op2;
+
+                case 200: //goto_w
+                case 201: //jsr_w
+                    return bytecode.pc + (op0 << 24 | op1 << 16 | op2 << 18 | op3); //2バイト分しか使わないので一応大丈夫？
+            }
+
+        }
+
+        return '';
+
+    }
+
+    function signExtensionByte(op0) {
+        return op0 > 127 ? op0 | 0xFFFFFF00 : op0; //符号拡張
+    }
+
+    function signExtensionShort(bytecode) {
+        var short = bytecode.operand[0] << 8 | bytecode.operand[1];
+
+        return op0 > 32768 ? short | 0xFFFF0000 : short; //符号拡張
+    }
+
+    function printConstantPoolValue(constantPool, index) {
+        var value = constantPool[index],
+            desc = '';
+        if (value.tag === 7) { //Class
+            desc = ' <span class="comment">// Class ' + escape(printClass(constantPool, value)) + '</span>';
+
+        } else if (value.tag === 8) { //String
+            desc = ' <span class="comment">// String ' + escape(printString(constantPool, value)) + '</span>';
+
+        } else if (value.tag === 9) { //Field
+            desc = ' <span class="comment">// Field ' + escape(printField(constantPool, value)) + '</span>';
+
+        } else if (value.tag === 10) { //Method
+            desc = ' <span class="comment">// Method ' + escape(printMethodref(constantPool, value)) + '</span>';
+
+        } else if (value.tag === 11) { //InterfaceMethod
+            desc = ' <span class="comment">// InterfaceMethod ' + escape(printMethodref(constantPool, value)) + '</span>';
+
+        }
+
+        return '#' + index + desc;
+    }
+
+    function printField(constantPool, value) {
+        return printClass(constantPool, constantPool[value.classIndex]) + '.' + printNameAndType(constantPool, constantPool[value.nameTypeIndex]);
+    }
+
+    function printMethodref(constantPool, value) {
+        return printClass(constantPool, constantPool[value.classIndex]) + '.' + printNameAndType(constantPool, constantPool[value.nameTypeIndex]);
+    }
+
+    function printNameAndType(constantPool, value) {
+        return constantPool[value.nameIndex].bytes + ':' + constantPool[value.descriptorIndex].bytes;
+    }
+
+
+    function printClass(constantPool, value) {
+        return constantPool[value.nameIndex].bytes;
+    }
+
+    function printString(constantPool, value) {
+        return constantPool[value.stringIndex].bytes;
+    }
+
 
     function ViewModel() {
 
+        var klass;
         var minorVersion = ko.observable();
         var majorVersion = ko.observable();
         var constantPoolCount = ko.observable();
@@ -117,6 +311,7 @@ var index = {};
         }
 
         return {
+            klass:klass,
             minorVersion:minorVersion,
             majorVersion:majorVersion,
             constantPoolCount:constantPoolCount,
@@ -150,6 +345,7 @@ var index = {};
             var classLoader = new JVM.ClassLoader();
             var klass = classLoader.loadClass(data);
 
+            viewModel.klass = klass;
             viewModel.minorVersion(klass.minorVersion);
             viewModel.majorVersion(klass.majorVersion);
             viewModel.constantPoolCount(klass.constantPoolCount);

@@ -12,6 +12,10 @@
 </head>
 <body>
 
+<h1>WE LOVE JAVAP</h1>
+
+<input type="file" id="file" name="files"/>
+
 <div id="drop">
     <p>DROP CLASS FILE</p>
 
@@ -145,7 +149,7 @@
                 <table class="method">
                     <thead>
                     <tr>
-                        <th colspan="2" data-bind="text: $root.getConstantUTF8Value($data.nameIndex)"></th>
+                        <th colspan="2" data-bind="method: $data"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -348,7 +352,7 @@
     </tr>
     <tr>
         <td colspan="2" class="border-left">
-            <table border="1" cellspacing="0" cellpadding="3">
+            <table border="1" cellspacing="0" cellpadding="3" class="code-table">
                 <thead>
                 <tr>
                     <th>pc</th>
@@ -358,7 +362,7 @@
                 <tbody data-bind="foreach: code">
                 <tr>
                     <th data-bind="text: pc"></th>
-                    <td data-bind="text: JVM.ByteCodeParser.BYTECODE_DETAIL[opecode].name"></td>
+                    <td data-bind="bytecode: $data" nowrap></td>
                 </tr>
                 </tbody>
             </table>
@@ -368,6 +372,7 @@
         <th>exception_table_length</th>
         <td data-bind="text: exceptionTableLength"></td>
     </tr>
+    <!-- ko if: exceptionTableLength > 0 -->
     <tr>
         <th colspan="2">exception_table</th>
     </tr>
@@ -395,6 +400,7 @@
             </table>
         </td>
     </tr>
+    <!-- /ko -->
     <tr>
         <th>attributes_count</th>
         <td data-bind="text: attributesCount"></td>
@@ -614,8 +620,8 @@
                     <th data-bind="text: $index"></th>
                     <td data-bind="text: startPC"></td>
                     <td data-bind="text: length"></td>
-                    <td data-bind="text: nameIndex"></td>
-                    <td data-bind="text: descriptorIndex"></td>
+                    <td data-bind="constantPool: nameIndex"></td>
+                    <td data-bind="constantPool: descriptorIndex"></td>
                     <td data-bind="text: index"></td>
                 </tr>
                 </tbody>
