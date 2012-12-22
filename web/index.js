@@ -7,6 +7,19 @@ var index = {};
         readFile(file);
     });
 
+
+    ko.bindingHandlers.constantPool = {
+        update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+            var value = valueAccessor();
+            if(value && value !== ''){
+                $(element).html('<a href="#constant' + value + '">' + '#' + value + '</a>');
+            }else{
+                $(element).html('');
+            }
+        }
+    };
+
+
     function ViewModel() {
 
         var minorVersion = ko.observable();
@@ -56,7 +69,7 @@ var index = {};
         }
 
         function getConstantUTF8Value(index) {
-            if(typeof constantPool()[index] !== 'undefined'){
+            if (typeof constantPool()[index] !== 'undefined') {
                 return constantPool()[index].bytes;
             }
             return '';
@@ -99,7 +112,7 @@ var index = {};
 
         }
 
-        function getConstantHref(index){
+        function getConstantHref(index) {
             return '#constant' + index;
         }
 
@@ -120,7 +133,7 @@ var index = {};
             elementValueTemplate:elementValueTemplate,
             getConstantUTF8Value:getConstantUTF8Value,
             getConstantType:getConstantType,
-            getConstantHref: getConstantHref
+            getConstantHref:getConstantHref
 
         };
     }

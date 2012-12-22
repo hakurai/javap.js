@@ -454,9 +454,10 @@ if (typeof JVM === 'undefined') {
 
             var i, len = attr.codeLength;
             for (i = 0; i < len; i++) {
-                code.push(getU1());
+                var b = getU1();
+                code.push(b & 0x000000FF);
             }
-            attr.code = code;
+            attr.code = JVM.ByteCodeParser.parse(code);
 
             attr.exceptionTableLength = getU2();
 

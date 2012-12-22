@@ -4,6 +4,7 @@
 <head>
     <meta charset=UTF-8>
     <link rel="stylesheet" href="index.css" type="text/css"/>
+    <script type="text/javascript" src="../src/main/byteCodeParser.js"></script>
     <script type="text/javascript" src="../src/main/classLoader.js"></script>
     <script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="lib/knockout-2.2.0.js"></script>
@@ -43,13 +44,11 @@
         </tr>
         <tr>
             <th>this_class</th>
-            <td data-bind="if: thisClass()"><a
-                    data-bind="text: '#' + thisClass(), attr: {href: '#constant' + thisClass()}"></a></td>
+            <td data-bind="constantPool: thisClass()"></td>
         </tr>
         <tr>
             <th>super_class</th>
-            <td data-bind="if: superClass()"><a
-                    data-bind="text: '#' + superClass(), attr: {href: '#constant' + superClass()}"></a></td>
+            <td data-bind="constantPool: superClass()"></td>
         </tr>
         <tr>
             <th>interfaces_count</th>
@@ -121,8 +120,8 @@
         <tr>
             <th data-bind="text: $index"></th>
             <td data-bind="text: accessFlags"></td>
-            <td data-bind="text: nameTypeIndex"></td>
-            <td data-bind="text: descTypeIndex"></td>
+            <td data-bind="constantPool: nameTypeIndex"></td>
+            <td data-bind="constantPool: descTypeIndex"></td>
             <td data-bind="text: attributeCount"></td>
             <td data-bind="foreach: attributes">
                 <table data-bind="template: {name: $root.getConstantUTF8Value($data.attributeNameIndex)}" border="1"
@@ -156,11 +155,11 @@
                     </tr>
                     <tr>
                         <th>name_index</th>
-                        <td data-bind="text: nameIndex"></td>
+                        <td data-bind="constantPool: nameIndex"></td>
                     </tr>
                     <tr>
                         <th>descriptor_index</th>
-                        <td data-bind="text: descriptorIndex"></td>
+                        <td data-bind="constantPool: descriptorIndex"></td>
                     </tr>
                     <tr>
                         <th>attributes_count</th>
@@ -250,43 +249,43 @@
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: '#' + nameIndex, attr: {href: $root.getConstantHref(nameIndex)}"></a></td>
+    <td data-bind="constantPool: nameIndex"></td>
     <td></td>
 </script>
 <script type="text/html" id="constant-8">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: '#' + stringIndex, attr: {href: $root.getConstantHref(stringIndex)}"></a></td>
+    <td data-bind="constantPool: stringIndex"></td>
     <td></td>
 </script>
 <script type="text/html" id="constant-9">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: '#' + classIndex, attr: {href: $root.getConstantHref(classIndex)}"></a></td>
-    <td><a data-bind="text: '#' + nameTypeIndex, attr: {href: $root.getConstantHref(nameTypeIndex)}"></a></td>
+    <td data-bind="constantPool: classIndex"></td>
+    <td data-bind="constantPool: nameTypeIndex"></td>
 </script>
 <script type="text/html" id="constant-10">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: '#' + classIndex, attr: {href: $root.getConstantHref(classIndex)}"></a></td>
-    <td><a data-bind="text: '#' + nameTypeIndex, attr: {href: $root.getConstantHref(nameTypeIndex)}"></a></td>
+    <td data-bind="constantPool: classIndex"></td>
+    <td data-bind="constantPool: nameTypeIndex"></td>
 </script>
 <script type="text/html" id="constant-11">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: '#' + classIndex, attr: {href: $root.getConstantHref(classIndex)}"></a></td>
-    <td><a data-bind="text: '#' + nameTypeIndex, attr: {href: $root.getConstantHref(nameTypeIndex)}"></a></td>
+    <td data-bind="constantPool: classIndex"></td>
+    <td data-bind="constantPool: nameTypeIndex"></td>
 </script>
 <script type="text/html" id="constant-12">
     <th data-bind="text: $index, attr: {id: 'constant' + $index()}"></th>
     <td class="constant-type" data-bind="text: $root.getConstantType(tag)"></td>
     <td data-bind="text: tag"></td>
-    <td><a data-bind="text: '#' + nameIndex, attr: {href: $root.getConstantHref(nameIndex)}"></a></td>
-    <td><a data-bind="text: '#' + descriptorIndex, attr: {href: $root.getConstantHref(descriptorIndex)}"></a></td>
+    <td data-bind="constantPool: nameIndex"></td>
+    <td data-bind="constantPool: descriptorIndex"></td>
 </script>
 
 <!-- attributes -->
@@ -301,7 +300,7 @@
     <tbody>
     <tr>
         <th>attribute_name_index</th>
-        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
+        <td data-bind="constantPool: attributeNameIndex">
         </td>
     </tr>
     <tr>
@@ -310,8 +309,7 @@
     </tr>
     <tr>
         <th>constant_value_index</th>
-        <td><a data-bind="text: '#' + constantValueIndex, attr: {href: $root.getConstantHref(constantValueIndex)}"></a>
-        </td>
+        <td data-bind="constantPool: constantValueIndex"></td>
     </tr>
     </tbody>
 </script>
@@ -327,8 +325,7 @@
     <tbody>
     <tr>
         <th>attribute_name_index</th>
-        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
-        </td>
+        <td data-bind="constantPool: attributeNameIndex"></td>
     </tr>
     <tr>
         <th>attribute_length</th>
@@ -347,8 +344,56 @@
         <td data-bind="text: codeLength"></td>
     </tr>
     <tr>
+        <th colspan="2">code</th>
+    </tr>
+    <tr>
+        <td colspan="2" class="border-left">
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>pc</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: code">
+                <tr>
+                    <th data-bind="text: pc"></th>
+                    <td data-bind="text: JVM.ByteCodeParser.BYTECODE_DETAIL[opecode].name"></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    <tr>
         <th>exception_table_length</th>
         <td data-bind="text: exceptionTableLength"></td>
+    </tr>
+    <tr>
+        <th colspan="2">exception_table</th>
+    </tr>
+    <tr>
+        <td colspan="2" class="border-left">
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>start_pc</th>
+                    <th>end_pc</th>
+                    <th>handler_pc</th>
+                    <th>catch_type</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: exceptionTable">
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="text: startPC">start_pc</td>
+                    <td data-bind="text: endPC">end_pc</td>
+                    <td data-bind="text: handlerPC">handler_pc</td>
+                    <td data-bind="text: catchType">catch_type</td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
     </tr>
     <tr>
         <th>attributes_count</th>
@@ -370,6 +415,51 @@
     </tbody>
 </script>
 
+<!-- Exceptions (§4.7.5) -->
+<script type="text/html" id="Exceptions">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>number_of_exceptions</th>
+        <td data-bind="text: numberOfExceptions"></td>
+    </tr>
+    <tr>
+        <th colspan="2">exception_index_table</th>
+    </tr>
+    <tr>
+        <td colspan="2" class="border-left">
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>Exception</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: exceptionIndexTable">
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="constantPool: $data"></td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</script>
+
 <!-- Synthetic (§4.7.8) -->
 <script type="text/html" id="Synthetic">
     <thead>
@@ -381,8 +471,7 @@
     <tbody>
     <tr>
         <th>attribute_name_index</th>
-        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
-        </td>
+        <td data-bind="constantPool: attributeNameIndex"></td>
     </tr>
     <tr>
         <th>attribute_length</th>
@@ -402,8 +491,7 @@
     <tbody>
     <tr>
         <th>attribute_name_index</th>
-        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
-        </td>
+        <td data-bind="constantPool: attributeNameIndex"></td>
     </tr>
     <tr>
         <th>attribute_length</th>
@@ -411,7 +499,7 @@
     </tr>
     <tr>
         <th>signature_index</th>
-        <td><a data-bind="text: '#' + signatureIndex, attr: {href: $root.getConstantHref(signatureIndex)}"></a></td>
+        <td data-bind="constantPool: signatureIndex"></td>
     </tr>
     </tbody>
 </script>
@@ -427,8 +515,7 @@
     <tbody>
     <tr>
         <th>attribute_name_index</th>
-        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
-        </td>
+        <td data-bind="constantPool: attributeNameIndex"></td>
     </tr>
     <tr>
         <th>attribute_length</th>
@@ -436,7 +523,7 @@
     </tr>
     <tr>
         <th>sourcefile_index</th>
-        <td><a data-bind="text: '#' + sourcefileIndex, attr: {href: $root.getConstantHref(sourcefileIndex)}"></a></td>
+        <td data-bind="constantPool: sourcefileIndex"></td>
     </tr>
     </tbody>
 </script>
@@ -452,8 +539,7 @@
     <tbody>
     <tr>
         <th>attribute_name_index</th>
-        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
-        </td>
+        <td data-bind="constantPool: attributeNameIndex"></td>
     </tr>
     <tr>
         <th>attribute_length</th>
@@ -500,8 +586,7 @@
     <tbody>
     <tr>
         <th>attribute_name_index</th>
-        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
-        </td>
+        <td data-bind="constantPool: attributeNameIndex"></td>
     </tr>
     <tr>
         <th>local_variable_table_length</th>
@@ -551,8 +636,7 @@
     <tbody>
     <tr>
         <th>attribute_name_index</th>
-        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
-        </td>
+        <td data-bind="constantPool: attributeNameIndex"></td>
     </tr>
     <tr>
         <th>attribute_length</th>
@@ -570,8 +654,7 @@
     <tbody>
     <tr>
         <th>attribute_name_index</th>
-        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
-        </td>
+        <td data-bind="constantPool: attributeNameIndex"></td>
     </tr>
     <tr>
         <th>num_annotations</th>
@@ -625,8 +708,7 @@
     <tbody>
     <tr>
         <th>attribute_name_index</th>
-        <td><a data-bind="text: '#' + attributeNameIndex, attr: {href: $root.getConstantHref(attributeNameIndex)}"></a>
-        </td>
+        <td data-bind="constantPool: attributeNameIndex"></td>
     </tr>
     <tr>
         <th>num_annotations</th>
