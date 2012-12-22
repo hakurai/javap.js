@@ -28,7 +28,7 @@ var index = {};
         }
     };
 
-    function constantPoolLink(value){
+    function constantPoolLink(value) {
         return '<a href="#constant' + value + '">' + '#' + value + '</a>';
     }
 
@@ -66,8 +66,9 @@ var index = {};
     function printOperand(bytecode, constantPool) {
         var op0, op1, op2, op3, index;
 
-
-        if (bytecode.operand.length === 0) {
+        if (bytecode.opecode === 170) {
+            return printTableSwitch(bytecode);
+        } else if (bytecode.operand.length === 0) {
             return ''
         } else if (bytecode.operand.length === 1) {
 
@@ -158,9 +159,56 @@ var index = {};
 
         }
 
+
         return '';
 
     }
+
+    function printTableSwitch(bytecode) {
+        var index = bytecode.pc,
+            defaultByteIndex = index + 1,
+            i = 0,
+            len,
+            def,
+            low,
+            high,
+            offsetArray = [],
+            offset,
+            operand = bytecode.operand,
+            print;
+
+        while (defaultByteIndex % 4 !== 0) {
+            defaultByteIndex++;
+            i++;
+        }
+
+        def = operand[i] << 24 | operand[i + 1] << 16 | operand[i + 2] << 8 | operand[i + 3];
+        low = operand[i + 4] << 24 | operand[i + 5] << 16 | operand[i + 6] << 8 | operand[i + 7];
+        high = operand[i + 8] << 24 | operand[i + 9] << 16 | operand[i + 10] << 8 | operand[i + 11];
+        i += 12;
+
+        len = operand.length;
+        while (i < len) {
+            offset = operand[i++] << 24 | operand[i++] << 16 | operand[i++] << 8 | operand[i++];
+            offsetArray.push(offset);
+        }
+
+        print = '<div class="offset-table"> { // ' + low + ' to ' + high + '<br />';
+
+        len = offsetArray.length;
+        for (i = 0; i < len; i++) {
+            print += (low + i);
+            print += ': ';
+            print += (index + offsetArray[i]);
+            print += '<br />';
+        }
+        print += 'default: ';
+        print += (index + def);
+        print += '<br />';
+        print += '}</div>';
+        return print;
+    }
+
 
     function signExtensionByte(op0) {
         return op0 > 127 ? op0 | 0xFFFFFF00 : op0; //符号拡張

@@ -178,8 +178,8 @@ if (typeof JVM === 'undefined') {
     BYTECODE_DETAIL[167] = bytecode('goto', 2);
     BYTECODE_DETAIL[168] = bytecode('jsr', 2);
     BYTECODE_DETAIL[169] = bytecode('ret', 1);
-//    BYTECODE_DETAIL[170] = bytecode(' -1;//tableswitch 突然の可変長命令！
-//    BYTECODE_DETAIL[171] = bytecode(' -1;//lookupswitch 突然の可変長命令！
+    BYTECODE_DETAIL[170] = bytecode('tableswitch'); //可変長命令
+    BYTECODE_DETAIL[171] = bytecode('lookupswitch'); // 可変長命令
     BYTECODE_DETAIL[172] = bytecode('ireturn', 0);
     BYTECODE_DETAIL[173] = bytecode('lreturn', 0);
     BYTECODE_DETAIL[174] = bytecode('freturn', 0);
@@ -204,20 +204,28 @@ if (typeof JVM === 'undefined') {
     BYTECODE_DETAIL[193] = bytecode('instanceof', 2);
     BYTECODE_DETAIL[194] = bytecode('monitorenter', 0);
     BYTECODE_DETAIL[195] = bytecode('monitorexit', 0);
-//    BYTECODE_DETAIL[196] = bytecode(' -1;//wide 突然の可変長命令！
+    BYTECODE_DETAIL[196] = bytecode('wide'); // 可変長命令
     BYTECODE_DETAIL[197] = bytecode('multianewarray', 3);
     BYTECODE_DETAIL[198] = bytecode('ifnull', 2);
     BYTECODE_DETAIL[199] = bytecode('ifnonnull', 2);
     BYTECODE_DETAIL[200] = bytecode('goto_w', 4);
     BYTECODE_DETAIL[201] = bytecode('jsr_w', 4);
 
-    BYTECODE_DETAIL[202] = bytecode('breakpoint', 0);
-    BYTECODE_DETAIL[254] = bytecode('impdep1', 0);
-    BYTECODE_DETAIL[255] = bytecode('impdep2', 0);
+    // 予約語
+    BYTECODE_DETAIL[202] = bytecode('breakpoint');
+    BYTECODE_DETAIL[254] = bytecode('impdep1');
+    BYTECODE_DETAIL[255] = bytecode('impdep2');
 
     function bytecode(name, num) {
         var fn;
-        if (num === 0) {
+
+        if (name === 'tableswitch') {
+            fn = parseTableswitch;
+        } else if (name === 'lookupswitch') {
+            fn = parseLookupswitch;
+        } else if (name === 'wide') {
+            fn = parseWide;
+        } else if (num === 0) {
             fn = parse0;
         } else if (num === 1) {
             fn = parse1;
@@ -275,6 +283,77 @@ if (typeof JVM === 'undefined') {
         };
     }
 
+    function parseTableswitch(code, index) {
+        var defaultByteIndex = index + 1,
+            i = index + 1,
+            len,
+            low,
+            high,
+            numJumpOffset,
+            operand = [];
+
+        while (defaultByteIndex % 4 !== 0) {
+            defaultByteIndex++;
+        }
+
+        low = code[defaultByteIndex + 4] << 24 | code[defaultByteIndex + 5] << 16 | code[defaultByteIndex + 6] << 8 | code[defaultByteIndex + 7];
+        high = code[defaultByteIndex + 8] << 24 | code[defaultByteIndex + 9] << 16 | code[defaultByteIndex + 10] << 8 | code[defaultByteIndex + 11];
+
+        numJumpOffset = (high - low + 1);
+
+        len = defaultByteIndex + (3 + numJumpOffset) * 4 - index + 1;
+        while (i < len) {
+            operand.push(code[i]);
+            i++;
+        }
+        return {
+            pc:index,
+            opecode:code[index],
+            operand:operand
+        };
+    }
+
+    function parseLookupswitch(code, index) {
+        var defaultByteIndex = index + 1,
+            i = index,
+            len,
+            npairs,
+            operand = [];
+
+        while (defaultByteIndex % 4 !== 0) {
+            defaultByteIndex++;
+        }
+
+        npairs = code[defaultByteIndex + 4] << 24 | code[defaultByteIndex + 5] << 16 | code[defaultByteIndex + 6] << 8 | code[defaultByteIndex + 7];
+
+        len = defaultByteIndex + (2 + npairs * 2) * 4 - i;
+        while (i < len) {
+            operand.push(i);
+            i++;
+        }
+        return {
+            pc:index,
+            opecode:code[index],
+            operand:operand
+        };
+    }
+
+    function parseWide(code, index) {
+        var operand;
+
+        if (code[index + 1] === 132) {
+            operand = [code[index + 1], code[index + 2], code[index + 3]];
+        } else {
+            operand = [code[index + 1], code[index + 2], code[index + 3], code[index + 4], code[index + 5]];
+        }
+
+        return {
+            pc:index,
+            opecode:code[index],
+            operand:operand
+        };
+    }
+
     JVM.ByteCodeParser.BYTECODE_DETAIL = BYTECODE_DETAIL;
 
     JVM.ByteCodeParser.parse = function (code) {
@@ -286,9 +365,7 @@ if (typeof JVM === 'undefined') {
         for (i = 0; i < len; i++) {
             try {
                 byteCode = BYTECODE_DETAIL[code[i]].parse(code, i);
-                console.log(BYTECODE_DETAIL[code[i]].name)
             } catch (e) {
-                console.log(code[i]);
                 throw e;
             }
             byteCodeArray.push(byteCode)

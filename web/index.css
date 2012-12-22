@@ -121,3 +121,8 @@ td.constant-type,
 .comment {
     color: #48494e;
 }
+
+.offset-table {
+    color: #48494e;
+    padding-left: 90px;
+}

@@ -12,8 +12,20 @@
 </head>
 <body>
 
-<h1>WE LOVE JAVAP</h1>
 
+<div id="social">
+    <a href="https://twitter.com/share" class="twitter-share-button" data-hashtags="javap">Tweet</a>
+    <script>!function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (!d.getElementById(id)) {
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "//platform.twitter.com/widgets.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }
+    }(document, "script", "twitter-wjs");</script>
+</div>
+<h1>WE LOVE JAVAP</h1>
 <input type="file" id="file" name="files"/>
 
 <div id="drop">
@@ -114,8 +126,8 @@
         <tr>
             <th>index</th>
             <th>access_flags</th>
-            <th>name_type_index</th>
-            <th>desc_type_index</th>
+            <th>name_index</th>
+            <th>descriptor_index</th>
             <th>attribute_count</th>
             <th>attributes</th>
         </tr>
@@ -124,8 +136,8 @@
         <tr>
             <th data-bind="text: $index"></th>
             <td data-bind="text: accessFlags"></td>
-            <td data-bind="constantPool: nameTypeIndex"></td>
-            <td data-bind="constantPool: descTypeIndex"></td>
+            <td data-bind="constantPool: nameIndex"></td>
+            <td data-bind="constantPool: descriptorIndex"></td>
             <td data-bind="text: attributeCount"></td>
             <td data-bind="foreach: attributes">
                 <table data-bind="template: {name: $root.getConstantUTF8Value($data.attributeNameIndex)}" border="1"
@@ -145,13 +157,12 @@
         <tbody data-bind="foreach: methods">
         <tr>
             <th data-bind="text: $index"></th>
+            <th data-bind="method: $data"></th>
+        </tr>
+        <tr>
+            <th></th>
             <td>
                 <table class="method">
-                    <thead>
-                    <tr>
-                        <th colspan="2" data-bind="method: $data"></th>
-                    </tr>
-                    </thead>
                     <tbody>
                     <tr>
                         <th>access_flags</th>

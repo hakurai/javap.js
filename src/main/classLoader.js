@@ -343,8 +343,8 @@ if (typeof JVM === 'undefined') {
         function getFieldInfo() {
             var info = {};
             info.accessFlags = getU2();
-            info.nameTypeIndex = getU2();
-            info.descTypeIndex = getU2();
+            info.nameIndex = getU2();
+            info.descriptorIndex = getU2();
             info.attributeCount = getU2();
 
             var count = info.attributeCount;
@@ -364,7 +364,6 @@ if (typeof JVM === 'undefined') {
             attr.attributeNameIndex = getU2();
             var attributeName = klass.constantPool[attr.attributeNameIndex];
 
-            console.log(attributeName.bytes);
             var fn;
             switch (attributeName.bytes) {
                 case 'ConstantValue':
