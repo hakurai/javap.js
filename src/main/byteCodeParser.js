@@ -315,7 +315,7 @@ if (typeof JVM === 'undefined') {
 
     function parseLookupswitch(code, index) {
         var defaultByteIndex = index + 1,
-            i = index,
+            i = index + 1,
             len,
             npairs,
             operand = [];
@@ -326,9 +326,9 @@ if (typeof JVM === 'undefined') {
 
         npairs = code[defaultByteIndex + 4] << 24 | code[defaultByteIndex + 5] << 16 | code[defaultByteIndex + 6] << 8 | code[defaultByteIndex + 7];
 
-        len = defaultByteIndex + (2 + npairs * 2) * 4 - i;
+        len = defaultByteIndex + (2 + npairs * 2) * 4 - index + 1;
         while (i < len) {
-            operand.push(i);
+            operand.push(code[i]);
             i++;
         }
         return {

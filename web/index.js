@@ -68,8 +68,13 @@ var index = {};
 
         if (bytecode.opecode === 170) {
             return printTableSwitch(bytecode);
+
+        } else if (bytecode.opecode === 171) {
+            return printLookupSwitch(bytecode);
+
         } else if (bytecode.operand.length === 0) {
             return ''
+
         } else if (bytecode.operand.length === 1) {
 
             switch (bytecode.opecode) {
@@ -209,6 +214,51 @@ var index = {};
         return print;
     }
 
+    function printLookupSwitch(bytecode) {
+        var index = bytecode.pc,
+            defaultByteIndex = index + 1,
+            i = 0,
+            len,
+            def,
+            npair,
+            pair,
+            pairArray = [],
+            offset,
+            operand = bytecode.operand,
+            print;
+
+        while (defaultByteIndex % 4 !== 0) {
+            defaultByteIndex++;
+            i++;
+        }
+
+        def = operand[i] << 24 | operand[i + 1] << 16 | operand[i + 2] << 8 | operand[i + 3];
+        npair = operand[i + 4] << 24 | operand[i + 5] << 16 | operand[i + 6] << 8 | operand[i + 7];
+        i += 8;
+
+        len = operand.length;
+        while (i < len) {
+            pair = {};
+            pair.match = operand[i++] << 24 | operand[i++] << 16 | operand[i++] << 8 | operand[i++];
+            pair.offset = operand[i++] << 24 | operand[i++] << 16 | operand[i++] << 8 | operand[i++];
+            pairArray.push(pair);
+        }
+
+        print = '<div class="offset-table"> { // ' + npair + '<br />';
+
+        len = pairArray.length;
+        for (i = 0; i < len; i++) {
+            print += pairArray[i].match;
+            print += ': ';
+            print += (index + pairArray[i].offset);
+            print += '<br />';
+        }
+        print += 'default: ';
+        print += (index + def);
+        print += '<br />';
+        print += '}</div>';
+        return print;
+    }
 
     function signExtensionByte(op0) {
         return op0 > 127 ? op0 | 0xFFFFFF00 : op0; //符号拡張
