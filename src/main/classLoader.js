@@ -43,6 +43,8 @@ if (typeof JVM === 'undefined') {
                 readFields();
                 readMethodsCount();
                 readMethods();
+                readAttributesCount();
+                readAttributes();
 
                 return klass;
             }
@@ -177,6 +179,18 @@ if (typeof JVM === 'undefined') {
             klass.methods = methods;
         }
 
+        function readAttributesCount() {
+            klass.attributesCount = getU2();
+        }
+
+        function readAttributes() {
+            var count = klass.attributesCount;
+            var attributes = [];
+            for (var i = 0; i < count; i++) {
+                attributes.push(getAttribute());
+            }
+            klass.attributes = attributes;
+        }
 
         function getCPInfo(info) {
             info.tag = getU1();

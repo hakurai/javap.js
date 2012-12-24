@@ -331,6 +331,8 @@ var index = {};
         var interfaces = ko.observableArray();
         var fields = ko.observableArray();
         var methods = ko.observableArray();
+        var attributesCount = ko.observable();
+        var attributes = ko.observableArray();
 
         function elementValueTemplate(tag) {
             switch (tag) {
@@ -427,6 +429,8 @@ var index = {};
             interfaces:interfaces,
             fields:fields,
             methods:methods,
+            attributesCount:attributesCount,
+            attributes:attributes,
             elementValueTemplate:elementValueTemplate,
             getConstantUTF8Value:getConstantUTF8Value,
             getConstantType:getConstantType,
@@ -457,11 +461,13 @@ var index = {};
             viewModel.interfacesCount(klass.interfacesCount);
             viewModel.fieldsCount(klass.fieldsCount);
             viewModel.methodsCount(klass.methodsCount);
+            viewModel.attributesCount(klass.attributesCount);
 
             ko.utils.arrayPushAll(viewModel.constantPool, klass.constantPool);
             ko.utils.arrayPushAll(viewModel.interfaces, klass.interfaces);
             ko.utils.arrayPushAll(viewModel.fields, klass.fields);
             ko.utils.arrayPushAll(viewModel.methods, klass.methods);
+            ko.utils.arrayPushAll(viewModel.attributes, klass.attributes);
         };
 
         reader.readAsArrayBuffer(file);

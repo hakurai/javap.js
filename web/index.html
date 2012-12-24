@@ -84,6 +84,10 @@
             <th>methods_count</th>
             <td data-bind="text: methodsCount"></td>
         </tr>
+        <tr>
+            <th>attributes_count</th>
+            <td data-bind="text: attributesCount"></td>
+        </tr>
         </tbody>
     </table>
 
@@ -202,6 +206,25 @@
                     </tr>
                     <!-- /ko -->
                     </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table id="attributes" border="1" cellspacing="0" cellpadding="3">
+        <thead>
+        <tr>
+            <th colspan="2">attributes</th>
+        </tr>
+        </thead>
+        <tbody data-bind="foreach: attributes">
+        <tr>
+            <th data-bind="text: $index"></th>
+            <td>
+                <table data-bind="template: {name: $root.getConstantUTF8Value($data.attributeNameIndex)}"
+                       border="1" class="attributes"
+                       cellspacing="0" cellpadding="3">
                 </table>
             </td>
         </tr>
