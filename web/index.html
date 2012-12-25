@@ -503,6 +503,31 @@
     </tbody>
 </script>
 
+<!-- StackMapTable (§4.7.4) -->
+<script type="text/html" id="StackMapTable">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td data-bind="constantPool: attributeNameIndex">
+        </td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>number_of_entries</th>
+        <td data-bind="text: numberOfEntries"></td>
+    </tr>
+    </tbody>
+</script>
+
 <!-- Exceptions (§4.7.5) -->
 <script type="text/html" id="Exceptions">
     <thead>
@@ -691,6 +716,26 @@
     <tr>
         <th>sourcefile_index</th>
         <td data-bind="constantPool: sourcefileIndex"></td>
+    </tr>
+    </tbody>
+</script>
+
+<!-- SourceFile (§4.7.11) -->
+<script type="text/html" id="SourceDebugExtension">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
     </tr>
     </tbody>
 </script>
@@ -990,6 +1035,135 @@
     </tbody>
 </script>
 
+<!-- RuntimeVisibleParameterAnnotations (§4.7.18) -->
+<script type="text/html" id="RuntimeVisibleParameterAnnotations">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>num_parameters</th>
+        <td data-bind="text: numParameters"></td>
+    </tr>
+    <tr>
+        <th>parameter_annotations</th>
+        <td>
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>type_index</th>
+                    <th>num_element_value_pairs</th>
+                    <th>element_value_pairs</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: parameterAnnotations">
+                <tr>
+                    <th>num_annotations</th>
+                    <td data-bind="text: numAnnotations"></td>
+                </tr>
+                <tr>
+                    <th colspan="2">annotations</th>
+                </tr>
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="if: numAnnotations > 0">
+                        <table border="1" cellspacing="0" cellpadding="3">
+                            <thead>
+                            <tr>
+                                <th>index</th>
+                                <th>element_name_index</th>
+                                <th>value</th>
+                            </tr>
+                            </thead>
+                            <tbody data-bind="foreach: annotations">
+                            <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</script>
+
+<!-- RuntimeInvisibleParameterAnnotations (§4.7.19) -->
+<script type="text/html" id="RuntimeInvisibleParameterAnnotations">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>num_parameters</th>
+        <td data-bind="text: numParameters"></td>
+    </tr>
+    <tr>
+        <th>parameter_annotations</th>
+        <td>
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>type_index</th>
+                    <th>num_element_value_pairs</th>
+                    <th>element_value_pairs</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: parameterAnnotations">
+                <tr>
+                    <th>num_annotations</th>
+                    <td data-bind="text: numAnnotations"></td>
+                </tr>
+                <tr>
+                    <th colspan="2">annotations</th>
+                </tr>
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="if: numAnnotations > 0">
+                        <table border="1" cellspacing="0" cellpadding="3">
+                            <thead>
+                            <tr>
+                                <th>index</th>
+                                <th>element_name_index</th>
+                                <th>value</th>
+                            </tr>
+                            </thead>
+                            <tbody data-bind="foreach: annotations">
+                            <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</script>
 
 <!-- AnnotationDefault (§4.7.20) -->
 <script type="text/html" id="AnnotationDefault">
@@ -1152,11 +1326,32 @@
             <thead>
             <tr>
                 <th>tag</th>
-                <th>element_name_index</th>
-                <th>value</th>
+                <th>index</th>
+                <th>type_index</th>
+                <th>num_element_value_pairs</th>
+                <th>element_value_pairs</th>
             </tr>
             </thead>
-            <tbody data-bind="template: {name:'RuntimeVisibleAnnotations', data: annotationValue}">
+            <tbody>
+            <tr>
+                <td data-bind="text: tag"></td>
+                <td data-bind="text: annotationValue.typeIndex"></td>
+                <td data-bind="text: annotationValue.numElementValuePairs"></td>
+                <td data-bind="if: annotationValue.numElementValuePairs > 0">
+                    <table border="1" cellspacing="0" cellpadding="3">
+                        <thead>
+                        <tr>
+                            <th>index</th>
+                            <th>element_name_index</th>
+                            <th>value</th>
+                        </tr>
+                        </thead>
+                        <tbody data-bind="foreach: annotationValue.elementValuePairs">
+                        <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
             </tbody>
         </table>
     </td>
@@ -1183,11 +1378,12 @@
                         <thead>
                         <tr>
                             <th>index</th>
-                            <th>tag</th>
+                            <th>element_name_index</th>
                             <th>value</th>
                         </tr>
                         </thead>
-                        <tbody data-bind="template: {name:'RuntimeVisibleAnnotations', data: annotationValue}">
+                        <tbody data-bind="foreach: values">
+                        <tr data-bind="template: {name: $root.elementValueTemplate($data.tag)}"></tr>
                         </tbody>
                     </table>
                 </td>
