@@ -5,6 +5,8 @@
     <meta charset=UTF-8>
     <link rel="stylesheet" href="index.css" type="text/css"/>
     <script type="text/javascript" src="../javap.min.js"></script>
+    <!--<script type="text/javascript" src="../src/main/classLoader.js"></script>-->
+    <!--<script type="text/javascript" src="../src/main/byteCodeParser.js"></script>-->
     <script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="lib/knockout-2.2.0.js"></script>
     <title>WE LOVE JAVA BYTECODE</title>
@@ -121,8 +123,8 @@
         </thead>
         <tbody data-bind="foreach: interfaces">
         <tr>
-            <td data-bind="text: $index"></td>
-            <td data-bind="text: $data"></td>
+            <th data-bind="text: $index"></th>
+            <td data-bind="constantPool: $data"></td>
         </tr>
         </tbody>
     </table>
@@ -608,7 +610,7 @@
                     <th>inner_class_access_flags</th>
                 </tr>
                 </thead>
-                <tbody data-bind="foreach: exceptionIndexTable">
+                <tbody data-bind="foreach: classes">
                 <tr>
                     <th data-bind="text: $index"></th>
                     <td data-bind="constantPool: innerClassInfoIndex"></td>
