@@ -544,7 +544,7 @@ if (typeof JVM === 'undefined') {
         function getStackMapFrame() {
             var frame = {};
 
-                frame.frameType = getU1();
+            frame.frameType = getU1();
 
             if (frame.frameType < 64) {
                 //same_frame
@@ -1267,7 +1267,7 @@ if (typeof JVM === 'undefined') {
     function parse4(code, index) {
         return {
             pc: index,
-            opecode: code[0],
+            opecode: code[index],
             operand: [code[index + 1], code[index + 2], code[index + 3], code[index + 4]]
         };
     }
