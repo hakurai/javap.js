@@ -178,8 +178,8 @@ if (typeof JVM === 'undefined') {
     BYTECODE_DETAIL[167] = bytecode('goto', 2);
     BYTECODE_DETAIL[168] = bytecode('jsr', 2);
     BYTECODE_DETAIL[169] = bytecode('ret', 1);
-    BYTECODE_DETAIL[170] = bytecode('tableswitch'); //可変長命令
-    BYTECODE_DETAIL[171] = bytecode('lookupswitch'); // 可変長命令
+    BYTECODE_DETAIL[170] = bytecode('tableswitch'); //variable length instruction
+    BYTECODE_DETAIL[171] = bytecode('lookupswitch'); // variable length instruction
     BYTECODE_DETAIL[172] = bytecode('ireturn', 0);
     BYTECODE_DETAIL[173] = bytecode('lreturn', 0);
     BYTECODE_DETAIL[174] = bytecode('freturn', 0);
@@ -193,7 +193,7 @@ if (typeof JVM === 'undefined') {
     BYTECODE_DETAIL[182] = bytecode('invokevirtual', 2);
     BYTECODE_DETAIL[183] = bytecode('involespecial', 2);
     BYTECODE_DETAIL[184] = bytecode('invokestatic', 2);
-    BYTECODE_DETAIL[185] = bytecode('invokeinterface', 4);// 4バイト目は常に0
+    BYTECODE_DETAIL[185] = bytecode('invokeinterface', 4);// 4th byte must be zero
     BYTECODE_DETAIL[186] = bytecode('invokeDynamic', 4);
     BYTECODE_DETAIL[187] = bytecode('new', 2);
     BYTECODE_DETAIL[188] = bytecode('newarray', 1);
@@ -204,14 +204,14 @@ if (typeof JVM === 'undefined') {
     BYTECODE_DETAIL[193] = bytecode('instanceof', 2);
     BYTECODE_DETAIL[194] = bytecode('monitorenter', 0);
     BYTECODE_DETAIL[195] = bytecode('monitorexit', 0);
-    BYTECODE_DETAIL[196] = bytecode('wide'); // 可変長命令
+    BYTECODE_DETAIL[196] = bytecode('wide'); // variable length instruction
     BYTECODE_DETAIL[197] = bytecode('multianewarray', 3);
     BYTECODE_DETAIL[198] = bytecode('ifnull', 2);
     BYTECODE_DETAIL[199] = bytecode('ifnonnull', 2);
     BYTECODE_DETAIL[200] = bytecode('goto_w', 4);
     BYTECODE_DETAIL[201] = bytecode('jsr_w', 4);
 
-    // 予約語
+    // reserved opcode
     BYTECODE_DETAIL[202] = bytecode('breakpoint');
     BYTECODE_DETAIL[254] = bytecode('impdep1');
     BYTECODE_DETAIL[255] = bytecode('impdep2');

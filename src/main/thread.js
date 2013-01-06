@@ -4,10 +4,10 @@ if (typeof JVM === 'undefined') {
 
 (function () {
     JVM.Thread = function () {
-        // 3.5.1 PCレジスタ
+        // 2.5.1 The pc Register
         this.passedCount;
 
-        // 3.5.2 Java仮想マシンスタック
+        // 2.5.2 Java Virtual Machine Stacks
         this.javaVirtualMachineStack = [];
     };
 

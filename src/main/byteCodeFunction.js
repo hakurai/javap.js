@@ -125,7 +125,7 @@ if(typeof JVM === 'undefined' ){
 
         // 0x6c
         idiv:function () {
-            // TODO ゼロ除算は ArithmeticException
+            // TODO divide by zero throws ArithmeticException
             var value2 = this.operandStack.pop();
             var value1 = this.operandStack.pop();
             var result = ~~(value1 / value2);

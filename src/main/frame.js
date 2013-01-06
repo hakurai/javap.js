@@ -5,13 +5,13 @@ if(typeof JVM === 'undefined' ){
 
 (function () {
 
-    // 3.6 フレーム
+    // 2.6 Frames
     JVM.Frame = function () {
-        // 3.6.1 ローカル変数
+        // 2.6.1 Local Variables
         this.localVariable = [];
-        // 3.6.2 オペランドスタック
+        // 2.6.2 Operand Stacks
         this.operandStack = [];
-        // 3.5.5 実行時コンスタントプールへの参照
+        // 2.5.5 Runtime Constant Pool
         this.runtimeConstantPoolRef;
     }
 

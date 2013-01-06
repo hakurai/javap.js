@@ -6,7 +6,7 @@ if (typeof JVM === 'undefined') {
 
     JVM.Klass = function () {
 
-        // 3.5.5 実行時コンスタントプール
+        // 2.5.5 Runtime Constant Pool
         this.runtimeConstantPool = [];
     };
 

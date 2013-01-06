@@ -5,10 +5,10 @@ if(typeof JVM === 'undefined' ){
 
 (function () {
 
-    // 3.5.3 ヒープ
-//    JVM.heap = [];
+    // 2.5.3 Heap
+    // JVM.heap = [];
 
-    //3.5.4 メソッドエリア
+    //2.5.4 Method Area
     JVM.methodArea = {};
 
 })();

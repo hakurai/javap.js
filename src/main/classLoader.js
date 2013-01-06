@@ -113,7 +113,7 @@ if (typeof JVM === 'undefined') {
         function readConstantPool() {
             var count = klass.constantPoolCount - 1;
             klass.constantPool = [
-                {} // 0 は JVM によって予約されている
+                {} // 0th constantPool is reserved by JVM
             ];
             var info;
             for (var i = 0; i < count; i++) {
