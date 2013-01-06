@@ -811,6 +811,7 @@ if (typeof JVM === 'undefined') {
             for (i = 0; i < len; i++) {
                 annotation = {};
                 annotation.numAnnotations = getU2();
+                jLen = annotation.numAnnotations;
                 annotation.annotations = [];
                 for (j = 0; j < jLen; j++) {
                     annotation.annotations.push(getAnnotation());
@@ -835,6 +836,7 @@ if (typeof JVM === 'undefined') {
             for (i = 0; i < len; i++) {
                 annotation = {};
                 annotation.numAnnotations = getU2();
+                jLen = annotation.numAnnotations;
                 annotation.annotations = [];
                 for (j = 0; j < jLen; j++) {
                     annotation.annotations.push(getAnnotation());
@@ -952,9 +954,9 @@ if (typeof JVM === 'undefined') {
         function getBootstrapMethod() {
             var i,
                 len,
-                bootstrapArguments = [];
+                bootstrapArguments = [],
+                method = {};
 
-            method = {};
             method.bootstrapMethodRef = getU2();
             len = method.numBootstrapArguments = getU2();
 

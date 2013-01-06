@@ -811,6 +811,7 @@ if (typeof JVM === 'undefined') {
             for (i = 0; i < len; i++) {
                 annotation = {};
                 annotation.numAnnotations = getU2();
+                jLen = annotation.numAnnotations;
                 annotation.annotations = [];
                 for (j = 0; j < jLen; j++) {
                     annotation.annotations.push(getAnnotation());
@@ -835,6 +836,7 @@ if (typeof JVM === 'undefined') {
             for (i = 0; i < len; i++) {
                 annotation = {};
                 annotation.numAnnotations = getU2();
+                jLen = annotation.numAnnotations;
                 annotation.annotations = [];
                 for (j = 0; j < jLen; j++) {
                     annotation.annotations.push(getAnnotation());
@@ -952,9 +954,9 @@ if (typeof JVM === 'undefined') {
         function getBootstrapMethod() {
             var i,
                 len,
-                bootstrapArguments = [];
+                bootstrapArguments = [],
+                method = {};
 
-            method = {};
             method.bootstrapMethodRef = getU2();
             len = method.numBootstrapArguments = getU2();
 
@@ -1226,49 +1228,49 @@ if (typeof JVM === 'undefined') {
             fn = parse4;
         }
         return {
-            name: name,
-            parse: fn
+            name:name,
+            parse:fn
         }
     }
 
 
     function parse0(code, index) {
         return {
-            pc: index,
-            opecode: code[index],
-            operand: []
+            pc:index,
+            opecode:code[index],
+            operand:[]
         };
     }
 
     function parse1(code, index) {
         return {
-            pc: index,
-            opecode: code[index],
-            operand: [code[index + 1]]
+            pc:index,
+            opecode:code[index],
+            operand:[code[index + 1]]
         };
     }
 
     function parse2(code, index) {
         return {
-            pc: index,
-            opecode: code[index],
-            operand: [code[index + 1], code[index + 2]]
+            pc:index,
+            opecode:code[index],
+            operand:[code[index + 1], code[index + 2]]
         };
     }
 
     function parse3(code, index) {
         return {
-            pc: index,
-            opecode: code[index],
-            operand: [code[index + 1], code[index + 2], code[index + 3]]
+            pc:index,
+            opecode:code[index],
+            operand:[code[index + 1], code[index + 2], code[index + 3]]
         };
     }
 
     function parse4(code, index) {
         return {
-            pc: index,
-            opecode: code[index],
-            operand: [code[index + 1], code[index + 2], code[index + 3], code[index + 4]]
+            pc:index,
+            opecode:code[index],
+            operand:[code[index + 1], code[index + 2], code[index + 3], code[index + 4]]
         };
     }
 
@@ -1296,9 +1298,9 @@ if (typeof JVM === 'undefined') {
             i++;
         }
         return {
-            pc: index,
-            opecode: code[index],
-            operand: operand
+            pc:index,
+            opecode:code[index],
+            operand:operand
         };
     }
 
@@ -1321,9 +1323,9 @@ if (typeof JVM === 'undefined') {
             i++;
         }
         return {
-            pc: index,
-            opecode: code[index],
-            operand: operand
+            pc:index,
+            opecode:code[index],
+            operand:operand
         };
     }
 
@@ -1337,9 +1339,9 @@ if (typeof JVM === 'undefined') {
         }
 
         return {
-            pc: index,
-            opecode: code[index],
-            operand: operand
+            pc:index,
+            opecode:code[index],
+            operand:operand
         };
     }
 
