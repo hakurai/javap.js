@@ -614,8 +614,8 @@
                 <tr>
                     <th data-bind="text: $index"></th>
                     <td data-bind="constantPool: innerClassInfoIndex"></td>
-                    <td data-bind="text: outerClassInfoIndex"></td>
-                    <td data-bind="text: innerNameIndex"></td>
+                    <td data-bind="constantPool: outerClassInfoIndex"></td>
+                    <td data-bind="constantPool: innerNameIndex"></td>
                     <td data-bind="text: innerClassAccessFlags"></td>
                 </tr>
                 </tbody>
@@ -1238,11 +1238,13 @@
                         <table border="1" cellspacing="0" cellpadding="3">
                             <thead>
                             <tr>
+                                <th>index</th>
                                 <th>BootstrapArgument</th>
                             </tr>
                             </thead>
                             <tbody data-bind="foreach: bootstrapArguments">
                             <tr>
+                                <th data-bind="text: $index"></th>
                                 <td data-bind="constantPool: $data"></td>
                             </tr>
                             </tbody>

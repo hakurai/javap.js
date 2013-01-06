@@ -194,7 +194,7 @@ if (typeof JVM === 'undefined') {
     BYTECODE_DETAIL[183] = bytecode('involespecial', 2);
     BYTECODE_DETAIL[184] = bytecode('invokestatic', 2);
     BYTECODE_DETAIL[185] = bytecode('invokeinterface', 4);// 4th byte must be zero
-    BYTECODE_DETAIL[186] = bytecode('invokeDynamic', 4);
+    BYTECODE_DETAIL[186] = bytecode('invokedynamic', 4);
     BYTECODE_DETAIL[187] = bytecode('new', 2);
     BYTECODE_DETAIL[188] = bytecode('newarray', 1);
     BYTECODE_DETAIL[189] = bytecode('anewarray', 2);

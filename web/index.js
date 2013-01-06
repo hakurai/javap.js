@@ -154,12 +154,13 @@ var index = {};
             switch (bytecode.opecode) {
 
                 case 185: //invokeinterface
+                case 186: //invokedynamic
                     index = op0 << 8 | op1;
                     return printConstantPoolValue(constantPool, index) + ', ' + op2;
 
                 case 200: //goto_w
                 case 201: //jsr_w
-                    return bytecode.pc + (op0 << 24 | op1 << 16 | op2 << 18 | op3); //2バイト分しか使わないので一応大丈夫？
+                    return bytecode.pc + (op0 << 24 | op1 << 16 | op2 << 18 | op3); //
             }
 
         }
@@ -261,13 +262,13 @@ var index = {};
     }
 
     function signExtensionByte(op0) {
-        return op0 > 127 ? op0 | 0xFFFFFF00 : op0; //符号拡張
+        return op0 > 127 ? op0 | 0xFFFFFF00 : op0; //Sign extension
     }
 
     function signExtensionShort(bytecode) {
         var short = bytecode.operand[0] << 8 | bytecode.operand[1];
 
-        return short > 32768 ? short | 0xFFFF0000 : short; //符号拡張
+        return short > 32768 ? short | 0xFFFF0000 : short; //Sign extension
     }
 
     function printConstantPoolValue(constantPool, index) {
@@ -317,7 +318,7 @@ var index = {};
 
     function ViewModel() {
 
-        var klass;
+        var klass = null;
         var minorVersion = ko.observable();
         var majorVersion = ko.observable();
         var constantPoolCount = ko.observable();
@@ -445,7 +446,6 @@ var index = {};
     function readFile(file) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            // 読み込んだファイルの中身をテキストエリアにセット
             var data = e.target.result;
 
             var classLoader = new JVM.ClassLoader();
