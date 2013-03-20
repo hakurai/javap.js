@@ -460,6 +460,10 @@ if (typeof JVM === 'undefined') {
                     fn = getBootstrapMethods;
                     break;
 
+                case 'MethodParameters':
+                    fn = getMethodParameters;
+                    break
+
                 default :
                     throw new Error('LinkageError');
             }
@@ -967,6 +971,24 @@ if (typeof JVM === 'undefined') {
             return method;
         }
 
+        function getMethodParameters(attr){
+            var i,
+                len,
+                methodParameters = [],
+                parameter;
+
+            attr.attributeLength = getU4();
+            len = attr.numMethodParameters = getU1();
+            for (i = 0; i < len; i++) {
+                parameter = {};
+                parameter.nameIndex = getU2();
+                parameter.flag = getU4();
+                methodParameters.push(parameter)
+            }
+
+            attr.methodParameters = methodParameters;
+        }
+
         function getMethodInfo() {
             var methodInfo = {};
 
@@ -990,10 +1012,6 @@ if (typeof JVM === 'undefined') {
 
     }
 
-})();
-
-
-(function () {
 
     JVM.ByteCodeParser = {};
 
