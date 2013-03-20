@@ -1,6 +1,10 @@
 var index = {};
 
 (function ($) {
+    $('#drop').on('dragover', function (e) {
+        e.preventDefault();
+    });
+
     $('#drop').on('drop', function (e) {
         e.preventDefault();
         var file = e.originalEvent.dataTransfer.files[0];
@@ -13,12 +17,35 @@ var index = {};
         readFile(file);
     });
 
+    $('#getFromURL').on('click', function(){
+        var url = $('#url').val();
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'arraybuffer';
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200 || xhr.status == 0) {
+                    readFile(new Blob([xhr.response], {'type': 'application/octet-stream'}));
+                } else {
+                    alert(xhr.status);
+                }
+            }
+        };
+
+        xhr.send(null);
+
+
+    })
+
     function escape(text) {
         return $('<div>').text(text).html();
     }
 
     ko.bindingHandlers.constantPool = {
-        update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var value = valueAccessor();
             if (value && value !== '') {
                 $(element).html(constantPoolLink(value));
@@ -33,7 +60,7 @@ var index = {};
     }
 
     ko.bindingHandlers.method = {
-        update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var value = valueAccessor();
             if (value && value !== '') {
                 $(element).text(
@@ -47,7 +74,7 @@ var index = {};
     };
 
     ko.bindingHandlers.bytecode = {
-        update:function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
+        update: function (element, valueAccessor, allBindingsAccessor, viewModel, bindingContext) {
             var value = valueAccessor(),
                 name,
                 operand;
@@ -416,26 +443,26 @@ var index = {};
         }
 
         return {
-            klass:klass,
-            minorVersion:minorVersion,
-            majorVersion:majorVersion,
-            constantPoolCount:constantPoolCount,
-            accessFlags:accessFlags,
-            thisClass:thisClass,
-            superClass:superClass,
-            interfacesCount:interfacesCount,
-            fieldsCount:fieldsCount,
-            methodsCount:methodsCount,
-            constantPool:constantPool,
-            interfaces:interfaces,
-            fields:fields,
-            methods:methods,
-            attributesCount:attributesCount,
-            attributes:attributes,
-            elementValueTemplate:elementValueTemplate,
-            getConstantUTF8Value:getConstantUTF8Value,
-            getConstantType:getConstantType,
-            getConstantHref:getConstantHref
+            klass: klass,
+            minorVersion: minorVersion,
+            majorVersion: majorVersion,
+            constantPoolCount: constantPoolCount,
+            accessFlags: accessFlags,
+            thisClass: thisClass,
+            superClass: superClass,
+            interfacesCount: interfacesCount,
+            fieldsCount: fieldsCount,
+            methodsCount: methodsCount,
+            constantPool: constantPool,
+            interfaces: interfaces,
+            fields: fields,
+            methods: methods,
+            attributesCount: attributesCount,
+            attributes: attributes,
+            elementValueTemplate: elementValueTemplate,
+            getConstantUTF8Value: getConstantUTF8Value,
+            getConstantType: getConstantType,
+            getConstantHref: getConstantHref
 
         };
     }
@@ -462,6 +489,12 @@ var index = {};
             viewModel.fieldsCount(klass.fieldsCount);
             viewModel.methodsCount(klass.methodsCount);
             viewModel.attributesCount(klass.attributesCount);
+
+            viewModel.constantPool.removeAll();
+            viewModel.interfaces.removeAll();
+            viewModel.fields.removeAll();
+            viewModel.methods.removeAll();
+            viewModel.attributes.removeAll();
 
             ko.utils.arrayPushAll(viewModel.constantPool, klass.constantPool);
             ko.utils.arrayPushAll(viewModel.interfaces, klass.interfaces);

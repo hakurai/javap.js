@@ -4,7 +4,7 @@
 <head>
     <meta charset=UTF-8>
     <link rel="stylesheet" href="index.css" type="text/css"/>
-    <script type="text/javascript" src="../javap.min.js"></script>
+    <script type="text/javascript" src="../javap.js"></script>
     <!--<script type="text/javascript" src="../src/main/classLoader.js"></script>-->
     <!--<script type="text/javascript" src="../src/main/byteCodeParser.js"></script>-->
     <script type="text/javascript" src="lib/jquery-1.8.2.min.js"></script>
@@ -12,6 +12,14 @@
     <title>WE LOVE JAVA BYTECODE</title>
 </head>
 <body>
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/ja_JP/all.js#xfbml=1";
+    fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 
 
 <div id="social">
@@ -31,15 +39,19 @@
             fjs.parentNode.insertBefore(js, fjs);
         }
     }(document, "script", "twitter-wjs");</script>
+    <div class="fb-like" data-href="http://hakurai.github.com/javap.js/web/" data-send="false" data-layout="button_count" data-width="300" data-show-faces="false"></div>
 </div>
 <h1>WE LOVE JAVA BYTECODE</h1>
-<input type="file" id="file" name="files"/>
+
+<p>Pure JavaScript Java class file disassembler <a href="https://github.com/hakurai/javap.js">Source(GitHub)</a></p>
 
 <div id="drop">
     <p>DROP CLASS FILE</p>
-
     <p>HERE!</p>
 </div>
+<input type="file" id="file" name="files"/>
+<input type="text" id="url" value="Hoge.class"/>
+<input type="button" value="get" id="getFromURL">
 
 <div>
 
@@ -197,8 +209,7 @@
 
                     <!-- ko foreach: attributes -->
                     <tr>
-                        <th></th>
-                        <td>
+                        <td colspan="2" class="border-left">
                             <table data-bind="template: {name: $root.getConstantUTF8Value($data.attributeNameIndex)}"
                                    border="1" class="attributes"
                                    cellspacing="0" cellpadding="3">
@@ -1250,6 +1261,54 @@
                             </tbody>
                         </table>
                     </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</script>
+
+<!-- MethodParameters -->
+<script type="text/html" id="MethodParameters">
+    <thead>
+    <tr>
+        <th class="constant-utf8-value" colspan="2"
+            data-bind="text: $root.getConstantUTF8Value(attributeNameIndex)"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th>attribute_name_index</th>
+        <td data-bind="constantPool: attributeNameIndex"></td>
+    </tr>
+    <tr>
+        <th>attribute_length</th>
+        <td data-bind="text: attributeLength"></td>
+    </tr>
+    <tr>
+        <th>num_method_parameters</th>
+        <td data-bind="text: numMethodParameters"></td>
+
+    </tr>
+    <tr>
+        <th colspan="2">method_parameters</th>
+    </tr>
+    <tr>
+        <td colspan="2" class="border-left">
+            <table border="1" cellspacing="0" cellpadding="3">
+                <thead>
+                <tr>
+                    <th>index</th>
+                    <th>name_index</th>
+                    <th>flag</th>
+                </tr>
+                </thead>
+                <tbody data-bind="foreach: methodParameters">
+                <tr>
+                    <th data-bind="text: $index"></th>
+                    <td data-bind="constantPool: nameIndex"></td>
+                    <td data-bind="text: flag"></td>
                 </tr>
                 </tbody>
             </table>
