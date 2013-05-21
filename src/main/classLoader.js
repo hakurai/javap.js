@@ -51,13 +51,13 @@ if (typeof JVM === 'undefined') {
         };
 
         function getU1() {
-            var byte = binary.getInt8(offset) & 0x000000FF;
+            var byte = binary.getUint8(offset);
             offset += 1;
             return byte;
         }
 
         function getU2() {
-            var bytes = binary.getUint16(offset, false) & 0x0000FFFF;
+            var bytes = binary.getUint16(offset, false);
             offset += 2;
             return bytes;
         }
@@ -264,16 +264,24 @@ if (typeof JVM === 'undefined') {
                     i++;
                     c += getU1() & 0x3f;
                     value += String.fromCharCode(c);
-                } else if (b <= 0xe0) {
+                } else if (b <= 0xef) {
+                    c = ((b & 0x0f) << 12);
                     i++;
-                    c = ((getU1() & 0x1f) << 6) | 0x0800;
+                    c = ((getU1() & 0x3f) << 6);
                     i++;
                     c += getU1() & 0x3f;
                     value += String.fromCharCode(c);
                 } else {
-                    c = ((b & 0x0f) << 12);
                     i++;
-                    c += (getU1() & 0x3f) << 6;
+                    c = ((getU1() & 0x0f) << 6);
+                    i++;
+                    c += getU1() & 0x3f;
+                    value += String.fromCharCode(c);
+                    
+                    i++;
+                    getU1();
+                    i++
+                    c = ((getU1() & 0x0f) << 6);
                     i++;
                     c += getU1() & 0x3f;
                     value += String.fromCharCode(c);
