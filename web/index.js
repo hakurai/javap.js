@@ -22,13 +22,13 @@ var index = {};
 
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url, true);
-        xhr.responseType = 'arraybuffer';
+        xhr.responseType = 'blob';
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4) {
                 if (xhr.status == 200 || xhr.status == 0) {
-                    readFile(new Blob([xhr.response], {'type': 'application/octet-stream'}));
+                    readFile(xhr.response);
                 } else {
                     alert(xhr.status);
                 }
