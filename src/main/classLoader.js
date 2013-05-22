@@ -267,7 +267,7 @@ if (typeof JVM === 'undefined') {
                 } else if (b <= 0xef) {
                     c = ((b & 0x0f) << 12);
                     i++;
-                    c = ((getU1() & 0x3f) << 6);
+                    c += ((getU1() & 0x3f) << 6);
                     i++;
                     c += getU1() & 0x3f;
                     value += String.fromCharCode(c);
@@ -275,12 +275,12 @@ if (typeof JVM === 'undefined') {
                     i++;
                     c = ((getU1() & 0x0f) << 6);
                     i++;
-                    c += getU1() & 0x3f;
+                    c += (getU1() & 0x3f);
                     value += String.fromCharCode(c);
-                    
+
                     i++;
                     getU1();
-                    i++
+                    i++;
                     c = ((getU1() & 0x0f) << 6);
                     i++;
                     c += getU1() & 0x3f;
