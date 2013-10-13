@@ -50,6 +50,10 @@ if (typeof JVM === 'undefined') {
             }
         };
 
+        function skip(len) {
+            offset += len;
+        }
+
         function getU1() {
             var byte = binary.getUint8(offset);
             offset += 1;
@@ -386,6 +390,8 @@ if (typeof JVM === 'undefined') {
             attr.attributeNameIndex = getU2();
             var attributeName = klass.constantPool[attr.attributeNameIndex];
 
+            attr.attributeLength = getU4();
+
             var fn;
             switch (attributeName.bytes) {
                 case 'ConstantValue':
@@ -473,7 +479,8 @@ if (typeof JVM === 'undefined') {
                     break
 
                 default :
-                    throw new Error('LinkageError');
+                    skip(attr.attributeLength);
+                    return attr;
             }
 
             fn(attr);
@@ -482,7 +489,6 @@ if (typeof JVM === 'undefined') {
         }
 
         function getConstantValue(attr) {
-            attr.attributeLength = getU4();
             attr.constantValueIndex = getU2();
 
         }
@@ -493,7 +499,6 @@ if (typeof JVM === 'undefined') {
                 attributes = [];
 
 
-            attr.attributeLength = getU4();
             attr.maxStack = getU2();
             attr.maxLocals = getU2();
             attr.codeLength = getU4();
@@ -541,7 +546,6 @@ if (typeof JVM === 'undefined') {
                 len,
                 entries = [];
 
-            attr.attributeLength = getU4();
             attr.numberOfEntries = getU2();
 
             len = attr.numberOfEntries;
@@ -654,7 +658,6 @@ if (typeof JVM === 'undefined') {
                 len,
                 exceptionIndexTable = [];
 
-            attr.attributeLength = getU4();
             attr.numberOfExceptions = getU2();
 
             len = attr.numberOfExceptions;
@@ -670,7 +673,6 @@ if (typeof JVM === 'undefined') {
                 len,
                 classes = [];
 
-            attr.attributeLength = getU4();
             attr.numberOfClasses = getU2();
 
             len = attr.numberOfClasses;
@@ -692,24 +694,20 @@ if (typeof JVM === 'undefined') {
         }
 
         function getEnclosingMethod(attr) {
-            attr.attributeLength = getU4();
             attr.classIndex = getU2();
             attr.methodIndex = getU2();
         }
 
         function getSynthetic(attr) {
-            attr.attributeLength = getU4();
 
         }
 
         function getSignature(attr) {
-            attr.attributeLength = getU4();
             attr.signatureIndex = getU2();
 
         }
 
         function getSourceFile(attr) {
-            attr.attributeLength = getU4();
             attr.sourcefileIndex = getU2();
         }
 
@@ -732,7 +730,6 @@ if (typeof JVM === 'undefined') {
                 lineNumberTable = [],
                 table;
 
-            attr.attributeLength = getU4();
             attr.lineNumberTableLength = getU2();
 
             len = attr.lineNumberTableLength;
@@ -752,7 +749,6 @@ if (typeof JVM === 'undefined') {
                 localVariableTable = [],
                 table;
 
-            attr.attributeLength = getU4();
             attr.localVariableTableLength = getU2();
 
             len = attr.localVariableTableLength;
@@ -775,7 +771,6 @@ if (typeof JVM === 'undefined') {
                 localVariableTypeTable = [],
                 table;
 
-            attr.attributeLength = getU4();
             attr.localVariableTypeTableLength = getU2();
             len = attr.localVariableTypeTableLength;
             for (i = 0; i < len; i++) {
@@ -792,19 +787,16 @@ if (typeof JVM === 'undefined') {
         }
 
         function getDeprecated(attr) {
-            attr.attributeLength = getU4();
 
         }
 
         function getRuntimeVisibleAnnotations(attr) {
-            attr.attributeLength = getU4();
             attr.numAnnotations = getU2();
             attr.annotations = getAnnotations(attr);
 
         }
 
         function getRuntimeInvisibleAnnotations(attr) {
-            attr.attributeLength = getU4();
             attr.numAnnotations = getU2();
             attr.annotations = getAnnotations(attr);
 
@@ -818,7 +810,6 @@ if (typeof JVM === 'undefined') {
                 parameterAnnotations = [],
                 annotation;
 
-            attr.attributeLength = getU4();
             len = attr.numParameters = getU1();
             for (i = 0; i < len; i++) {
                 annotation = {};
@@ -843,7 +834,6 @@ if (typeof JVM === 'undefined') {
                 parameterAnnotations = [],
                 annotation;
 
-            attr.attributeLength = getU4();
             len = attr.numParameters = getU1();
             for (i = 0; i < len; i++) {
                 annotation = {};
@@ -861,7 +851,6 @@ if (typeof JVM === 'undefined') {
         }
 
         function getAnnotationDefault(attr) {
-            attr.attributeLength = getU4();
             attr.defaultValue = getElementValue();
         }
 
@@ -954,7 +943,6 @@ if (typeof JVM === 'undefined') {
                 len,
                 bootstrapMethods = [];
 
-            attr.attributeLength = getU4();
             len = attr.numBootstrapMethods = getU2();
             for (i = 0; i < len; i++) {
                 bootstrapMethods.push(getBootstrapMethod());
@@ -985,7 +973,6 @@ if (typeof JVM === 'undefined') {
                 methodParameters = [],
                 parameter;
 
-            attr.attributeLength = getU4();
             len = attr.numMethodParameters = getU1();
             for (i = 0; i < len; i++) {
                 parameter = {};
