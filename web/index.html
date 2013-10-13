@@ -975,7 +975,9 @@
                             </tr>
                             </thead>
                             <tbody data-bind="foreach: elementValuePairs">
-                            <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                            <th data-bind="text: $index"></th>
+                            <td data-bind="text: elementNameIndex"></td>
+                            <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag), data: value}"></tr>
                             </tbody>
                         </table>
                     </td>
@@ -1035,7 +1037,9 @@
                             </tr>
                             </thead>
                             <tbody data-bind="foreach: elementValuePairs">
-                            <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                            <th data-bind="text: $index"></th>
+                            <td data-bind="text: elementNameIndex"></td>
+                            <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag), data: value}"></tr>
                             </tbody>
                         </table>
                     </td>
@@ -1095,12 +1099,33 @@
                             <thead>
                             <tr>
                                 <th>index</th>
-                                <th>element_name_index</th>
-                                <th>value</th>
+                                <th>type_index</th>
+                                <th>num_element_value_pairs</th>
+                                <th>element_value_pairs</th>
                             </tr>
                             </thead>
                             <tbody data-bind="foreach: annotations">
-                            <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                            <tr>
+                                <th data-bind="text: $index"></th>
+                                <td data-bind="text: typeIndex"></td>
+                                <td data-bind="text: numElementValuePairs"></td>
+                                <td data-bind="if: numElementValuePairs > 0">
+                                    <table border="1" cellspacing="0" cellpadding="3">
+                                        <thead>
+                                        <tr>
+                                            <th>index</th>
+                                            <th>element_name_index</th>
+                                            <th>value</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-bind="foreach: elementValuePairs">
+                                        <th data-bind="text: $index"></th>
+                                        <td data-bind="text: elementNameIndex"></td>
+                                        <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag), data: value}"></tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </td>
@@ -1160,12 +1185,33 @@
                             <thead>
                             <tr>
                                 <th>index</th>
-                                <th>element_name_index</th>
-                                <th>value</th>
+                                <th>type_index</th>
+                                <th>num_element_value_pairs</th>
+                                <th>element_value_pairs</th>
                             </tr>
                             </thead>
                             <tbody data-bind="foreach: annotations">
-                            <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                            <tr>
+                                <th data-bind="text: $index"></th>
+                                <td data-bind="text: typeIndex"></td>
+                                <td data-bind="text: numElementValuePairs"></td>
+                                <td data-bind="if: numElementValuePairs > 0">
+                                    <table border="1" cellspacing="0" cellpadding="3">
+                                        <thead>
+                                        <tr>
+                                            <th>index</th>
+                                            <th>element_name_index</th>
+                                            <th>value</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody data-bind="foreach: elementValuePairs">
+                                        <th data-bind="text: $index"></th>
+                                        <td data-bind="text: elementNameIndex"></td>
+                                        <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag), data: value}"></tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </td>
@@ -1319,8 +1365,6 @@
 
 <!-- element value -->
 <script type="text/html" id="elementValue-other">
-    <th data-bind="text: $index"></th>
-    <td data-bind="text: elementNameIndex"></td>
     <td>
         <table border="1" cellspacing="0" cellpadding="3">
             <thead>
@@ -1339,8 +1383,6 @@
     </td>
 </script>
 <script type="text/html" id="elementValue-enum">
-    <th data-bind="text: $index"></th>
-    <td data-bind="text: elementNameIndex"></td>
     <td>
         <table border="1" cellspacing="0" cellpadding="3">
             <thead>
@@ -1361,8 +1403,6 @@
     </td>
 </script>
 <script type="text/html" id="elementValue-class">
-    <th data-bind="text: $index"></th>
-    <td data-bind="text: elementNameIndex"></td>
     <td>
         <table border="1" cellspacing="0" cellpadding="3">
             <thead>
@@ -1381,8 +1421,6 @@
     </td>
 </script>
 <script type="text/html" id="elementValue-annotation">
-    <th data-bind="text: $index"></th>
-    <td data-bind="text: elementNameIndex"></td>
     <td>
         <table border="1" cellspacing="0" cellpadding="3">
             <thead>
@@ -1409,7 +1447,9 @@
                         </tr>
                         </thead>
                         <tbody data-bind="foreach: annotationValue.elementValuePairs">
-                        <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag)}"></tr>
+                        <th data-bind="text: $index"></th>
+                        <td data-bind="text: elementNameIndex"></td>
+                        <tr data-bind="template: {name: $root.elementValueTemplate($data.value.tag), data: value}"></tr>
                         </tbody>
                     </table>
                 </td>
@@ -1420,8 +1460,6 @@
     <td></td>
 </script>
 <script type="text/html" id="elementValue-array">
-    <th data-bind="text: $index"></th>
-    <td data-bind="text: elementNameIndex"></td>
     <td>
         <table border="1" cellspacing="0" cellpadding="3">
             <thead>
@@ -1440,11 +1478,11 @@
                         <thead>
                         <tr>
                             <th>index</th>
-                            <th>element_name_index</th>
                             <th>value</th>
                         </tr>
                         </thead>
                         <tbody data-bind="foreach: values">
+                        <th data-bind="text: $index"></th>
                         <tr data-bind="template: {name: $root.elementValueTemplate($data.tag)}"></tr>
                         </tbody>
                     </table>

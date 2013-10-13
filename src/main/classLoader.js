@@ -479,6 +479,7 @@ if (typeof JVM === 'undefined') {
                     break
 
                 default :
+                    attr.attributeNameIndex = 'undefined';
                     skip(attr.attributeLength);
                     return attr;
             }
@@ -936,6 +937,7 @@ if (typeof JVM === 'undefined') {
 
 
             }
+            return elementValue;
         }
 
         function getBootstrapMethods(attr) {

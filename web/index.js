@@ -363,6 +363,7 @@ var index = {};
         var attributes = ko.observableArray();
 
         function elementValueTemplate(tag) {
+//            console.log(tag);
             switch (tag) {
                 case 0x42: // B byte
                 case 0x43: // C char
@@ -396,6 +397,7 @@ var index = {};
 
         function getConstantUTF8Value(index) {
             if (typeof constantPool()[index] !== 'undefined') {
+//                console.log(constantPool()[index].bytes);
                 return constantPool()[index].bytes;
             }
             return '';
